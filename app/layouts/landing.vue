@@ -3,8 +3,8 @@ import LandingNavbar from "@/components/LandingNavbar.vue";
 </script>
 
 <template>
-  <div>
+  <main class="bg-teal-800">
     <LandingNavbar />
     <slot />
-  </div>
+  </main>
 </template>

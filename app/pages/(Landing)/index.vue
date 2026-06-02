@@ -5,7 +5,7 @@ definePageMeta({
 </script>
 
 <template>
-  <div>
-    <h1>ini landing</h1>
-  </div>
+  <section class="h-screen">
+    <div>TEST</div>
+  </section>
 </template>
