@@ -1,5 +1,5 @@
 import type { CreateTiketSchema } from "./model";
-import { eq } from "drizzle-orm";
+import { desc, eq } from "drizzle-orm";
 import { db } from "~~/server/database";
 import { tiketAspirasi, tiketLampiranTable, tiketPengaduan, tiketPermintaanInformasi, tiketStatusHistoryTable, tiketTable } from "~~/server/database/schema/tiket";
 import { getFileExtension } from "~~/server/utils/files";
@@ -80,15 +80,59 @@ export abstract class TiketRepo {
       }
 
       return {
-        id: tiket.id,
         noTiket,
       };
     });
   };
 
   static async findByNoTiket(noTiket: string) {
-    return db.query.tiketTable.findFirst({
-      where: eq(tiketTable.noTiket, noTiket),
-    });
+    const tiket = await db
+      .select({
+        id: tiketTable.id,
+        noTiket: tiketTable.noTiket,
+        jenis: tiketTable.jenis,
+        judul: tiketTable.judul,
+        isi: tiketTable.isi,
+        status: tiketTable.status,
+        tanggalDibuat: tiketTable.createdAt,
+      })
+      .from(tiketTable)
+      .where(eq(tiketTable.noTiket, noTiket))
+      .limit(1);
+
+    const data = tiket[0];
+    if (!data)
+      return null;
+
+    const [lampiran, statusHistory] = await Promise.all([
+      db
+        .select({
+          storedName: tiketLampiranTable.storedName,
+          path: tiketLampiranTable.path,
+          originalName: tiketLampiranTable.originalName,
+          mimeType: tiketLampiranTable.mimeType,
+          extension: tiketLampiranTable.extension,
+          size: tiketLampiranTable.size,
+        })
+        .from(tiketLampiranTable)
+        .where(eq(tiketLampiranTable.idTiket, data.id)),
+
+      db
+        .select({
+          statusSebelumnya: tiketStatusHistoryTable.statusSebelumnya,
+          statusBaru: tiketStatusHistoryTable.statusBaru,
+          catatan: tiketStatusHistoryTable.catatan,
+          tanggal: tiketStatusHistoryTable.createdAt,
+        })
+        .from(tiketStatusHistoryTable)
+        .where(eq(tiketStatusHistoryTable.idTiket, data.id))
+        .orderBy(desc(tiketStatusHistoryTable.createdAt)),
+    ]);
+
+    return {
+      ...data,
+      lampiran,
+      statusHistory,
+    };
   }
 }

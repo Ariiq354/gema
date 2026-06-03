@@ -53,3 +53,20 @@ export async function readValidatedMultipart<T>(
 
   return parsed.data;
 }
+
+export async function getValidatedQuerySafe<T>(
+  event: H3Event,
+  schema: z.ZodSchema<T>,
+): Promise<T> {
+  const result = await getValidatedQuery(event, schema.safeParse);
+
+  if (!result.success) {
+    throw createError({
+      statusCode: 400,
+      statusMessage: "Invalid query",
+      data: z.treeifyError(result.error),
+    });
+  }
+
+  return result.data;
+}

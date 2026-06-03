@@ -36,3 +36,9 @@ export const createTiketSchema = z.discriminatedUnion(
 );
 
 export type CreateTiketSchema = z.infer<typeof createTiketSchema>;
+
+export const getTiketSchema = z.object({
+  noTiket: z.string().min(1),
+});
+
+export type GetTiketSchema = z.infer<typeof getTiketSchema>;
