@@ -17,12 +17,14 @@ export abstract class TiketService {
     try {
       return await TiketRepo.create(payload, lampiranKeys);
     }
-    catch (error) {
+    catch (err) {
       await Promise.allSettled(
         lampiranKeys.map(key => deleteFile(key)),
       );
 
-      throw error;
+      console.error("createTiket failed:", err);
+
+      throw createError({ statusCode: 500, statusMessage: "Gagal membuat tiket" });
     }
   }
 

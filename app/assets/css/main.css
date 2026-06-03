@@ -1,9 +1,10 @@
 @import "tailwindcss";
 @import "@nuxt/ui";
 
-@theme {
+@theme static {
   --font-display: "Poppins", sans-serif;
-  --color-primary-50: #ffffff;
+
+  --color-eucalyptus-50: #ffffff;
   --color-eucalyptus-100: #beffdb;
   --color-eucalyptus-200: #8ef7c4;
   --color-eucalyptus-300: #72daa9;

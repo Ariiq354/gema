@@ -1,6 +1,6 @@
 <template>
-  <div>
-    Ini Dashboard Layout
+  <UDashboardGroup>
+    <DashboardSidebar />
     <slot />
-  </div>
+  </UDashboardGroup>
 </template>

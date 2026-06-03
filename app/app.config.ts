@@ -1,5 +1,8 @@
 export default defineAppConfig({
   ui: {
+    colors: {
+      primary: "eucalyptus",
+    },
     card: {
       slots: {
         root: "shadow-lg",

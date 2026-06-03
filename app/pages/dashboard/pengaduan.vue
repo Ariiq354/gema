@@ -7,7 +7,7 @@ definePageMeta({
 <template>
   <div>
     <h1 class="text-black">
-      ini dashboard
+      ini pengaduan
     </h1>
   </div>
 </template>

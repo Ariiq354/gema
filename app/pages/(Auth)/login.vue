@@ -1,11 +1,11 @@
 <script setup lang="ts">
+import LoginContainer from "~/features/auth/LoginContainer.vue";
+
 definePageMeta({
   layout: "auth",
 });
 </script>
 
 <template>
-  <div>
-    <h1>Login</h1>
-  </div>
+  <LoginContainer />
 </template>
