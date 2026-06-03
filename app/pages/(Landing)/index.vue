@@ -1,11 +1,11 @@
 <script setup lang="ts">
+import LandingContainer from "~/features/landing/LandingContainer.vue";
+
 definePageMeta({
   layout: "landing",
 });
 </script>
 
 <template>
-  <section class="h-screen">
-    <div>TEST</div>
-  </section>
+  <LandingContainer />
 </template>

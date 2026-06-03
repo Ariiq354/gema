@@ -1,2 +1,29 @@
 @import "tailwindcss";
 @import "@nuxt/ui";
+
+@theme {
+  --font-display: "Poppins", sans-serif;
+  --color-primary-50: #ffffff;
+  --color-eucalyptus-100: #beffdb;
+  --color-eucalyptus-200: #8ef7c4;
+  --color-eucalyptus-300: #72daa9;
+  --color-eucalyptus-400: #55be8f;
+  --color-eucalyptus-500: #36a375;
+  --color-eucalyptus-600: #09885d;
+  --color-eucalyptus-700: #006c49;
+  --color-eucalyptus-800: #005236;
+  --color-eucalyptus-900: #003824;
+  --color-eucalyptus-950: #002113;
+
+  --color-golden-50: #ffffff;
+  --color-golden-100: #ffefd5;
+  --color-golden-200: #ffdfa0;
+  --color-golden-300: #f6be39;
+  --color-golden-400: #d7a31b;
+  --color-golden-500: #b88900;
+  --color-golden-600: #987100;
+  --color-golden-700: #795900;
+  --color-golden-800: #5c4300;
+  --color-golden-900: #402d00;
+  --color-golden-950: #261a00;
+}
