@@ -5,7 +5,6 @@ import { readValidatedMultipart } from "~~/server/utils/multipart";
 export default defineEventHandler(async (event) => {
   const payload = await readValidatedMultipart(event, createTiketSchema);
 
-  return "check";
   const result = await TiketService.createTiket(payload);
 
   return result;

@@ -3,7 +3,27 @@ import { TiketRepo } from "./repo";
 
 export abstract class TiketService {
   static async createTiket(payload: CreateTiketSchema) {
-    return TiketRepo.create(payload);
+    const lampiranKeys = await Promise.all(
+      payload.files.map(file =>
+        uploadFile(
+          "tiket",
+          file.filename!,
+          file.data,
+          file.type!,
+        ),
+      ),
+    );
+
+    try {
+      return await TiketRepo.create(payload, lampiranKeys);
+    }
+    catch (error) {
+      await Promise.allSettled(
+        lampiranKeys.map(key => deleteFile(key)),
+      );
+
+      throw error;
+    }
   }
 
   static async findByNoTiket(noTiket: string) {

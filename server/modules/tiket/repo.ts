@@ -1,11 +1,12 @@
 import type { CreateTiketSchema } from "./model";
 import { eq } from "drizzle-orm";
 import { db } from "~~/server/database";
-import { tiketAspirasi, tiketPengaduan, tiketPermintaanInformasi, tiketStatusHistoryTable, tiketTable } from "~~/server/database/schema/tiket";
+import { tiketAspirasi, tiketLampiranTable, tiketPengaduan, tiketPermintaanInformasi, tiketStatusHistoryTable, tiketTable } from "~~/server/database/schema/tiket";
+import { getFileExtension } from "~~/server/utils/files";
 import { generateNoTiket } from "~~/server/utils/generate";
 
 export abstract class TiketRepo {
-  static async create(payload: CreateTiketSchema) {
+  static async create(payload: CreateTiketSchema, lampiranKeys?: string[]) {
     return db.transaction(async (tx) => {
       const noTiket = await generateNoTiket(tx);
 
@@ -55,6 +56,28 @@ export abstract class TiketRepo {
           statusBaru: "pending",
           catatan: "Tiket dibuat",
         });
+
+      if (lampiranKeys && lampiranKeys.length) {
+        if (lampiranKeys.length !== payload.files.length) {
+          throw new Error("Lampiran tidak sesuai dengan jumlah file");
+        };
+
+        await tx.insert(tiketLampiranTable).values(
+          lampiranKeys.map((key, index) => {
+            const file = payload.files[index]!;
+
+            return {
+              idTiket: tiket.id,
+              storedName: key,
+              path: key,
+              originalName: file.filename ?? "",
+              mimeType: file.type ?? "",
+              extension: file.filename ? getFileExtension(file.filename) : "",
+              size: file.data.length,
+            };
+          }),
+        );
+      }
 
       return {
         id: tiket.id,

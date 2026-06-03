@@ -1,27 +1,29 @@
 import { z } from "zod";
 import { multipartFiles } from "~~/server/utils/schema";
 
-const pengaduanSchema = z.object({
-  jenis: z.literal("pengaduan"),
+const baseSchema = z.object({
   judul: z.string().min(1),
   isi: z.string().min(1),
+  files: multipartFiles(),
+});
+
+const pengaduanSchema = z.object({
+  jenis: z.literal("pengaduan"),
   tanggalKejadian: z.iso.date().transform(val => new Date(val)),
   lokasiKejadian: z.string().min(1),
-  files: multipartFiles(),
+  ...baseSchema.shape,
 });
 
 const aspirasiSchema = z.object({
   jenis: z.literal("aspirasi"),
-  judul: z.string().min(1),
-  isi: z.string().min(1),
   asalPelapor: z.string().min(1),
+  ...baseSchema.shape,
 });
 
 const permintaanInformasiSchema = z.object({
   jenis: z.literal("permintaan_informasi"),
-  judul: z.string().min(1),
-  isi: z.string().min(1),
   asalPelapor: z.string().min(1),
+  ...baseSchema.shape,
 });
 
 export const createTiketSchema = z.discriminatedUnion(
