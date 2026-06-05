@@ -4,10 +4,6 @@ import InformasiForm from "./components/InformasiForm.vue";
 import LaporanTab from "./components/LaporanTab.vue";
 import PengaduanForm from "./components/PengaduanForm.vue";
 
-definePageMeta({
-  layout: "landing",
-});
-
 const activeTab = ref<"pengaduan" | "aspirasi" | "informasi">("pengaduan");
 </script>
 

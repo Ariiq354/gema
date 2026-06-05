@@ -14,7 +14,7 @@
     "db:studio": "drizzle-kit studio"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.1059.0",
+    "@aws-sdk/client-s3": "^3.1061.0",
     "@neondatabase/serverless": "^1.1.0",
     "@nuxt/image": "2.0.0",
     "@nuxt/ui": "4.8.1",
