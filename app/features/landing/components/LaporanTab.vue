@@ -73,10 +73,9 @@ const tabs = [
 
     <p class="text-center mt-6">
       Perhatikan Cara Menyampaikan Pengaduan Yang Baik dan Benar
-
       <a
         href="#"
-        class="text-eucalyptus-700 ml-2"
+        class="text-eucalyptus-700 ml-2 font-semibold"
       >
         Lihat Panduan
       </a>

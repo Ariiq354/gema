@@ -1,5 +1,5 @@
 <template>
-  <header class="fixed top-4 left-1/2 -translate-x-1/2 w-360 h-18 flex items-center justify-between">
+  <header class="fixed top-4 left-1/2 -translate-x-1/2 w-360 h-18 flex items-center justify-between z-20">
     <div class="relative w-full h-full ">
       <div class="absolute w-full h-full border-2 border-white rounded-xl bg-white/10  backdrop-blur-[6px]" />
       <div class="absolute inset-0 flex items-center justify-between px-6">
