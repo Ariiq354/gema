@@ -33,7 +33,7 @@ const items = ref<StepperItem[]>([
 </script>
 
 <template>
-  <div class="relative mt-20">
+  <div class="relative my-40">
     <div class="container mx-auto">
       <UStepper v-model="activeStep" :items="items" color="warning">
         <template #indicator="{ item }">

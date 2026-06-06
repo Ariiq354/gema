@@ -4,6 +4,7 @@ import InformasiForm from "./components/InformasiForm.vue";
 import LaporanTab from "./components/LaporanTab.vue";
 import PengaduanForm from "./components/PengaduanForm.vue";
 import StepProsesPengajuan from "./components/StepProsesPengajuan.vue";
+import TotalLaporan from "./components/TotalLaporan.vue";
 
 const activeTab = ref<"pengaduan" | "aspirasi" | "informasi">("pengaduan");
 </script>
@@ -49,5 +50,6 @@ const activeTab = ref<"pengaduan" | "aspirasi" | "informasi">("pengaduan");
     </div>
 
     <StepProsesPengajuan />
+    <TotalLaporan />
   </section>
 </template>
