@@ -26,7 +26,7 @@
         </div>
 
         <div>
-          <UButton class="bg-eucalyptus-700 hover:bg-eucalyptus-800 rounded-lg text-white py-2 px-6 cursor-pointer">
+          <UButton to="/login" class="bg-eucalyptus-700 hover:bg-eucalyptus-800 rounded-lg text-white py-2 px-6 cursor-pointer">
             Masuk
           </UButton>
         </div>

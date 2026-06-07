@@ -9,6 +9,11 @@ const items: NavigationMenuItem[][] = [
       to: "/dashboard",
     },
     {
+      label: "Daftar Instansi",
+      icon: "i-lucide-layout-dashboard",
+      to: "/dashboard/instansi",
+    },
+    {
       label: "Pengaduan",
       icon: "i-lucide-inbox",
       badge: "4",

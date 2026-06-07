@@ -1,31 +1,10 @@
-import type { CreateTiketSchema } from "./model";
+import type { PaginationSearchSchema } from "~~/server/utils/schema";
+import type { CreateTiketDiterimaSchema, CreateTiketResponseSchema, CreateTiketSchema } from "./model";
 import { TiketRepo } from "./repo";
 
 export abstract class TiketService {
   static async createTiket(payload: CreateTiketSchema) {
-    const lampiranKeys = await Promise.all(
-      payload.files.map(file =>
-        uploadFile(
-          "tiket",
-          file.filename!,
-          file.data,
-          file.type!,
-        ),
-      ),
-    );
-
-    try {
-      return await TiketRepo.create(payload, lampiranKeys);
-    }
-    catch (err) {
-      await Promise.allSettled(
-        lampiranKeys.map(key => deleteFile(key)),
-      );
-
-      console.error("createTiket failed:", err);
-
-      throw createError({ statusCode: 500, statusMessage: "Gagal membuat tiket" });
-    }
+    return await TiketRepo.create(payload);
   }
 
   static async findByNoTiket(noTiket: string) {
@@ -36,5 +15,25 @@ export abstract class TiketService {
     };
 
     return tiket;
+  }
+
+  static async findPengaduan(query: PaginationSearchSchema) {
+    return await TiketRepo.findAll(query, "pengaduan");
+  }
+
+  static async findAspirasi(query: PaginationSearchSchema) {
+    return await TiketRepo.findAll(query, "aspirasi");
+  }
+
+  static async findPermintaanInformasi(query: PaginationSearchSchema) {
+    return await TiketRepo.findAll(query, "permintaan_informasi");
+  }
+
+  static async tiketDiterima(idTiket: number, body: CreateTiketDiterimaSchema) {
+    return await TiketRepo.tiketDiterima(idTiket, body);
+  }
+
+  static async tiketSelesai(idTiket: number, body: CreateTiketResponseSchema) {
+    return await TiketRepo.tiketSelesai(idTiket, body);
   }
 }

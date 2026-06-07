@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import PengaduanContainer from "~/features/pengaduan/PengaduanContainer.vue";
+import InstansiContainer from "~/features/instansi/InstansiContainer.vue";
 
 definePageMeta({
   layout: "dashboard",
@@ -7,5 +7,5 @@ definePageMeta({
 </script>
 
 <template>
-  <PengaduanContainer />
+  <InstansiContainer />
 </template>

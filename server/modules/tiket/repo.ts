@@ -1,12 +1,13 @@
-import type { CreateTiketSchema } from "./model";
-import { desc, eq } from "drizzle-orm";
+import type { PaginationSearchSchema } from "~~/server/utils/schema";
+import type { CreateTiketDiterimaSchema, CreateTiketResponseSchema, CreateTiketSchema, FindAllResultMap, Jenis } from "./model";
+import { desc, eq, ilike } from "drizzle-orm";
 import { db } from "~~/server/database";
-import { tiketAspirasi, tiketLampiranTable, tiketPengaduan, tiketPermintaanInformasi, tiketStatusHistoryTable, tiketTable } from "~~/server/database/schema/tiket";
-import { getFileExtension } from "~~/server/utils/files";
+import { instansiTable } from "~~/server/database/schema/instansi";
+import { tiketAspirasiTable, tiketPengaduanTable, tiketPermintaanInformasiTable, tiketResponseTable, tiketStatusHistoryTable, tiketTable } from "~~/server/database/schema/tiket";
 import { generateNoTiket } from "~~/server/utils/generate";
 
 export abstract class TiketRepo {
-  static async create(payload: CreateTiketSchema, lampiranKeys?: string[]) {
+  static async create(payload: CreateTiketSchema) {
     return db.transaction(async (tx) => {
       const noTiket = await generateNoTiket(tx);
 
@@ -17,6 +18,7 @@ export abstract class TiketRepo {
           jenis: payload.jenis,
           judul: payload.judul,
           isi: payload.isi,
+          idInstansi: payload.idInstansi,
           status: "pending",
         })
         .returning({ id: tiketTable.id });
@@ -27,7 +29,7 @@ export abstract class TiketRepo {
 
       switch (payload.jenis) {
         case "pengaduan":
-          await tx.insert(tiketPengaduan).values({
+          await tx.insert(tiketPengaduanTable).values({
             idTiket: tiket.id,
             tanggalKejadian: payload.tanggalKejadian,
             lokasiKejadian: payload.lokasiKejadian,
@@ -35,14 +37,14 @@ export abstract class TiketRepo {
           break;
 
         case "aspirasi":
-          await tx.insert(tiketAspirasi).values({
+          await tx.insert(tiketAspirasiTable).values({
             idTiket: tiket.id,
             asalPelapor: payload.asalPelapor,
           });
           break;
 
         case "permintaan_informasi":
-          await tx.insert(tiketPermintaanInformasi).values({
+          await tx.insert(tiketPermintaanInformasiTable).values({
             idTiket: tiket.id,
             asalPelapor: payload.asalPelapor,
           });
@@ -56,28 +58,6 @@ export abstract class TiketRepo {
           statusBaru: "pending",
           catatan: "Tiket dibuat",
         });
-
-      if (lampiranKeys && lampiranKeys.length) {
-        if (lampiranKeys.length !== payload.files.length) {
-          throw new Error("Lampiran tidak sesuai dengan jumlah file");
-        };
-
-        await tx.insert(tiketLampiranTable).values(
-          lampiranKeys.map((key, index) => {
-            const file = payload.files[index]!;
-
-            return {
-              idTiket: tiket.id,
-              storedName: key,
-              path: key,
-              originalName: file.filename ?? "",
-              mimeType: file.type ?? "",
-              extension: file.filename ? getFileExtension(file.filename) : "",
-              size: file.data.length,
-            };
-          }),
-        );
-      }
 
       return {
         noTiket,
@@ -93,10 +73,12 @@ export abstract class TiketRepo {
         jenis: tiketTable.jenis,
         judul: tiketTable.judul,
         isi: tiketTable.isi,
+        instansi: instansiTable.nama,
         status: tiketTable.status,
         tanggalDibuat: tiketTable.createdAt,
       })
       .from(tiketTable)
+      .leftJoin(instansiTable, eq(tiketTable.idInstansi, instansiTable.id))
       .where(eq(tiketTable.noTiket, noTiket))
       .limit(1);
 
@@ -104,35 +86,119 @@ export abstract class TiketRepo {
     if (!data)
       return null;
 
-    const [lampiran, statusHistory] = await Promise.all([
-      db
-        .select({
-          storedName: tiketLampiranTable.storedName,
-          path: tiketLampiranTable.path,
-          originalName: tiketLampiranTable.originalName,
-          mimeType: tiketLampiranTable.mimeType,
-          extension: tiketLampiranTable.extension,
-          size: tiketLampiranTable.size,
-        })
-        .from(tiketLampiranTable)
-        .where(eq(tiketLampiranTable.idTiket, data.id)),
-
-      db
-        .select({
-          statusSebelumnya: tiketStatusHistoryTable.statusSebelumnya,
-          statusBaru: tiketStatusHistoryTable.statusBaru,
-          catatan: tiketStatusHistoryTable.catatan,
-          tanggal: tiketStatusHistoryTable.createdAt,
-        })
-        .from(tiketStatusHistoryTable)
-        .where(eq(tiketStatusHistoryTable.idTiket, data.id))
-        .orderBy(desc(tiketStatusHistoryTable.createdAt)),
-    ]);
+    const statusHistory = await db
+      .select({
+        statusSebelumnya: tiketStatusHistoryTable.statusSebelumnya,
+        statusBaru: tiketStatusHistoryTable.statusBaru,
+        catatan: tiketStatusHistoryTable.catatan,
+        tanggal: tiketStatusHistoryTable.createdAt,
+      })
+      .from(tiketStatusHistoryTable)
+      .where(eq(tiketStatusHistoryTable.idTiket, data.id))
+      .orderBy(desc(tiketStatusHistoryTable.createdAt));
 
     return {
       ...data,
-      lampiran,
       statusHistory,
     };
+  }
+
+  static async findAll<T extends Jenis>(
+    query: PaginationSearchSchema,
+    jenis: T,
+  ): Promise<{
+    total: number;
+    data: FindAllResultMap[T][];
+  }> {
+    const offset = (query.page - 1) * query.limit;
+
+    let qb;
+    switch (jenis) {
+      case "pengaduan":
+        qb = db.select({
+          id: tiketTable.id,
+          noTiket: tiketTable.noTiket,
+          judul: tiketTable.judul,
+          isi: tiketTable.isi,
+          idInstansi: tiketTable.idInstansi,
+          status: tiketTable.status,
+          tanggalKejadian: tiketPengaduanTable.tanggalKejadian,
+          lokasiKejadian: tiketPengaduanTable.lokasiKejadian,
+        })
+          .from(tiketPengaduanTable)
+          .innerJoin(tiketTable, eq(tiketPengaduanTable.idTiket, tiketTable.id))
+          .orderBy(desc(tiketPengaduanTable.id));
+
+        break;
+      case "aspirasi":
+        qb = db.select({
+          id: tiketTable.id,
+          noTiket: tiketTable.noTiket,
+          judul: tiketTable.judul,
+          isi: tiketTable.isi,
+          idInstansi: tiketTable.idInstansi,
+          status: tiketTable.status,
+          asalPelapor: tiketAspirasiTable.asalPelapor,
+        })
+          .from(tiketAspirasiTable)
+          .innerJoin(tiketTable, eq(tiketAspirasiTable.idTiket, tiketTable.id))
+          .orderBy(desc(tiketAspirasiTable.id));
+        break;
+      case "permintaan_informasi":
+        qb = db.select({
+          id: tiketTable.id,
+          noTiket: tiketTable.noTiket,
+          judul: tiketTable.judul,
+          isi: tiketTable.isi,
+          idInstansi: tiketTable.idInstansi,
+          status: tiketTable.status,
+          asalPelapor: tiketPermintaanInformasiTable.asalPelapor,
+        })
+          .from(tiketPermintaanInformasiTable)
+          .innerJoin(tiketTable, eq(tiketPermintaanInformasiTable.idTiket, tiketTable.id))
+          .orderBy(desc(tiketPermintaanInformasiTable.id));
+        break;
+    }
+
+    if (query.search) {
+      qb.where(ilike(instansiTable.nama, `%${query.search}%`));
+    }
+
+    const total = await db.$count(qb);
+    const data = await qb.limit(query.limit).offset(offset);
+
+    return { total, data: data as FindAllResultMap[T][] };
+  }
+
+  static async tiketDiterima(idTiket: number, body: CreateTiketDiterimaSchema) {
+    await db.transaction(async (tx) => {
+      await tx.update(tiketTable).set({ status: "proses" }).where(eq(tiketTable.id, idTiket));
+
+      await tx.insert(tiketStatusHistoryTable).values({
+        idTiket,
+        statusSebelumnya: "pending",
+        statusBaru: "proses",
+        catatan: body.catatan,
+      });
+    });
+  }
+
+  static async tiketSelesai(idTiket: number, body: CreateTiketResponseSchema) {
+    await db.transaction(async (tx) => {
+      await tx.update(tiketTable).set({ status: "selesai" }).where(eq(tiketTable.id, idTiket));
+
+      await tx.insert(tiketStatusHistoryTable).values({
+        idTiket,
+        statusSebelumnya: "proses",
+        statusBaru: "selesai",
+        catatan: body.isiRespon,
+      });
+
+      await tx.insert(tiketResponseTable).values({
+        idTiket,
+        isiRespon: body.isiRespon,
+        dibuatOleh: body.dibuatOleh,
+      });
+    });
   }
 }

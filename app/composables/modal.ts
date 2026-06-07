@@ -1,3 +1,5 @@
+import ModalConfirm from "~/components/Modal/ModalConfirm.vue";
+
 const overlay = useOverlay();
 export function openModal(
   component: any,
@@ -8,4 +10,19 @@ export function openModal(
   });
 
   return modal.open();
+}
+export function openConfirmModal(
+  path: string,
+  body: object,
+  refresh: () => void,
+) {
+  const modal = overlay.create(ModalConfirm, {
+    props: {
+      path,
+      body,
+      refresh,
+    },
+  });
+
+  modal.open();
 }

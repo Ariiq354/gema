@@ -1,10 +1,9 @@
 import { z } from "zod";
-import { multipartFiles } from "~~/server/utils/schema";
 
 const baseSchema = z.object({
   judul: z.string().min(1),
   isi: z.string().min(1),
-  files: multipartFiles(),
+  idInstansi: z.number().min(1),
 });
 
 const pengaduanSchema = z.object({
@@ -42,3 +41,49 @@ export const getTiketSchema = z.object({
 });
 
 export type GetTiketSchema = z.infer<typeof getTiketSchema>;
+
+export const createTiketDiterimaSchema = z.object({
+  catatan: z.string().min(1),
+});
+
+export type CreateTiketDiterimaSchema = z.infer<typeof createTiketDiterimaSchema>;
+
+export const createTiketResponseSchema = z.object({
+  isiRespon: z.string().min(1),
+  dibuatOleh: z.string().min(1),
+});
+
+export type CreateTiketResponseSchema = z.infer<typeof createTiketResponseSchema>;
+
+export type Jenis = "pengaduan" | "aspirasi" | "permintaan_informasi";
+
+export interface FindAllResultMap {
+  pengaduan: {
+    id: number;
+    noTiket: string;
+    judul: string;
+    isi: string;
+    idInstansi: number;
+    status: string;
+    tanggalKejadian: Date;
+    lokasiKejadian: string;
+  };
+  aspirasi: {
+    id: number;
+    noTiket: string;
+    judul: string;
+    isi: string;
+    idInstansi: number;
+    status: string;
+    asalPelapor: string;
+  };
+  permintaan_informasi: {
+    id: number;
+    noTiket: string;
+    judul: string;
+    isi: string;
+    idInstansi: number;
+    status: string;
+    asalPelapor: string;
+  };
+}
