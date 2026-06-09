@@ -1,5 +1,4 @@
-import type { PaginationSearchSchema } from "~~/server/utils/schema";
-import type { CreateTiketDiterimaSchema, CreateTiketResponseSchema, CreateTiketSchema } from "./model";
+import type { CreateTiketDiterimaSchema, CreateTiketResponseSchema, CreateTiketSchema, GetTiketRequestSchema } from "./model";
 import { TiketRepo } from "./repo";
 
 export abstract class TiketService {
@@ -23,15 +22,15 @@ export abstract class TiketService {
     return tiket;
   }
 
-  static async findPengaduan(query: PaginationSearchSchema) {
+  static async findPengaduan(query: GetTiketRequestSchema) {
     return await TiketRepo.findAll(query, "pengaduan");
   }
 
-  static async findAspirasi(query: PaginationSearchSchema) {
+  static async findAspirasi(query: GetTiketRequestSchema) {
     return await TiketRepo.findAll(query, "aspirasi");
   }
 
-  static async findPermintaanInformasi(query: PaginationSearchSchema) {
+  static async findPermintaanInformasi(query: GetTiketRequestSchema) {
     return await TiketRepo.findAll(query, "permintaan_informasi");
   }
 

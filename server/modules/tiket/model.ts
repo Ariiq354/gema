@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { paginationSearchSchema } from "~~/server/utils/schema";
 
 const baseSchema = z.object({
   judul: z.string().min(1),
@@ -8,7 +9,7 @@ const baseSchema = z.object({
 
 const pengaduanSchema = z.object({
   jenis: z.literal("pengaduan"),
-  tanggalKejadian: z.iso.date().transform(val => new Date(val)),
+  tanggalKejadian: z.iso.date(),
   lokasiKejadian: z.string().min(1),
   ...baseSchema.shape,
 });
@@ -87,3 +88,10 @@ export interface FindAllResultMap {
     asalPelapor: string;
   };
 }
+
+export const getTiketRequestSchema = z.object({
+  ...paginationSearchSchema.shape,
+  idInstansi: z.number().optional(),
+});
+
+export type GetTiketRequestSchema = z.infer<typeof getTiketRequestSchema>;

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { FormSubmitEvent } from "@nuxt/ui";
 import type { Schema } from "../constants";
+import { FetchError } from "ofetch";
 import { schema } from "../constants";
 
 const emit = defineEmits(["submit"]);
@@ -32,7 +33,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
     openModel.value = false;
     emit("submit");
   }
-  catch (error: FetchError) {
+  catch (error) {
     if (error instanceof FetchError) {
       useToastError("Submit Failed", error.data.message);
     }

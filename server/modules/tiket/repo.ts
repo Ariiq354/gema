@@ -1,9 +1,22 @@
-import type { PaginationSearchSchema } from "~~/server/utils/schema";
-import type { CreateTiketDiterimaSchema, CreateTiketResponseSchema, CreateTiketSchema, FindAllResultMap, Jenis } from "./model";
+import type {
+  CreateTiketDiterimaSchema,
+  CreateTiketResponseSchema,
+  CreateTiketSchema,
+  FindAllResultMap,
+  GetTiketRequestSchema,
+  Jenis,
+} from "./model";
 import { desc, eq, ilike } from "drizzle-orm";
 import { db } from "~~/server/database";
 import { instansiTable } from "~~/server/database/schema/instansi";
-import { tiketAspirasiTable, tiketPengaduanTable, tiketPermintaanInformasiTable, tiketResponseTable, tiketStatusHistoryTable, tiketTable } from "~~/server/database/schema/tiket";
+import {
+  tiketAspirasiTable,
+  tiketPengaduanTable,
+  tiketPermintaanInformasiTable,
+  tiketResponseTable,
+  tiketStatusHistoryTable,
+  tiketTable,
+} from "~~/server/database/schema/tiket";
 import { generateNoTiket } from "~~/server/utils/generate";
 
 export abstract class TiketRepo {
@@ -104,7 +117,7 @@ export abstract class TiketRepo {
   }
 
   static async findAll<T extends Jenis>(
-    query: PaginationSearchSchema,
+    query: GetTiketRequestSchema,
     jenis: T,
   ): Promise<{
     total: number;
@@ -162,6 +175,10 @@ export abstract class TiketRepo {
 
     if (query.search) {
       qb.where(ilike(instansiTable.nama, `%${query.search}%`));
+    }
+
+    if (query.idInstansi) {
+      qb.where(eq(tiketTable.idInstansi, query.idInstansi));
     }
 
     const total = await db.$count(qb);

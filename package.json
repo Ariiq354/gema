@@ -21,6 +21,7 @@
     "@vueuse/nuxt": "14.3.0",
     "better-auth": "^1.6.14",
     "drizzle-orm": "^0.45.2",
+    "drizzle-query-logger": "^1.1.2",
     "nuxt": "^4.4.7",
     "nuxt-security": "2.6.0",
     "postgres": "^3.4.9",
