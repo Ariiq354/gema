@@ -32,8 +32,13 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
     openModel.value = false;
     emit("submit");
   }
-  catch (error: any) {
-    useToastError("Submit Failed", error.data.message);
+  catch (error: FetchError) {
+    if (error instanceof FetchError) {
+      useToastError("Submit Failed", error.data.message);
+    }
+    else {
+      useToastError("Submit Failed", "Internal Server Error");
+    }
   }
   finally {
     isLoading.value = false;

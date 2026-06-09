@@ -11,7 +11,13 @@ export abstract class TiketService {
     const tiket = await TiketRepo.findByNoTiket(noTiket);
 
     if (!tiket) {
-      throw createError({ statusCode: 404, statusMessage: "Tiket tidak ditemukan" });
+      throw createError({
+        statusCode: 404,
+        data: {
+          code: "TIKET_MISSING",
+          message: "Tiket tidak ditemukan",
+        },
+      });
     };
 
     return tiket;
