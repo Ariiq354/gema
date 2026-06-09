@@ -181,6 +181,10 @@ export abstract class TiketRepo {
       qb.where(eq(tiketTable.idInstansi, query.idInstansi));
     }
 
+    if (query.jenis) {
+      qb.where(eq(tiketTable.jenis, query.jenis));
+    }
+
     const total = await db.$count(qb);
     const data = await qb.limit(query.limit).offset(offset);
 
