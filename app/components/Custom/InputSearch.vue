@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const searchModel = defineModel<string>();
+const searchModel = defineModel<string>({ required: true });
 
 const searchDebounced = useDebounceFn((v) => {
   searchModel.value = v;

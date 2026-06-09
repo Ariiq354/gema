@@ -54,18 +54,18 @@ async function signOut() {
 </script>
 
 <template>
-  <UDashboardSidebar collapsible resizable :ui="{ footer: 'border-t border-default' }">
+  <UDashboardSidebar collapsible resizable :ui="{ footer: 'border-t border-default' }" class="bg-white-pointer-50">
     <div class="flex items-center gap-3 px-2 py-3">
       <NuxtImg
         src="/images/logo-kemenag-bogor.png"
         alt="GEMA Logo"
-        class="w-10 h-10 object-contain"
+        class="w-16 h-16 object-contain"
       />
       <div class="leading-tight">
-        <h1 class="font-semibold text-sm">
-          GEMA
+        <h1 class="font-bold text-lg text-primary-800">
+          KEMENAG BOGOR
         </h1>
-        <p class="text-xs text-gray-500">
+        <p class="text-sm text-gray-500">
           Sistem Informasi
         </p>
       </div>
@@ -73,6 +73,11 @@ async function signOut() {
 
     <UNavigationMenu
       :items="items[0]"
+      :ui="{
+        link: 'py-4 px-4 text-base font-medium',
+        label: 'text-base',
+        linkLeadingIcon: 'size-5',
+      }"
       orientation="vertical"
     />
 

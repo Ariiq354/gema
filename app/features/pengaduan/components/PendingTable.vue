@@ -1,33 +1,39 @@
 <script setup lang="ts">
+import type { ColumnDef } from "@tanstack/vue-table";
+import { h } from "vue";
+import { UButton } from "#components";
 import DataTable from "~/components/Custom/DataTable.vue";
-import { columns } from "../constants";
 
-const query = ref({ page: 1 });
-const pendingTickets = [
+const query = ref({ page: 1, status: "pending" });
+
+const { data, status, refresh } = await useFetch("/api/v1/tiket/admin/pengaduan", {
+  query,
+});
+
+async function handleVerifikasiTerima(id: number) {
+  openConfirmModalTerimaLaporan(`/api/v1/tiket/admin/${id}/diterima`, refresh);
+}
+
+const columns: ColumnDef<any>[] = [
+  { accessorKey: "noTiket", header: "No Tiket" },
+  { accessorKey: "judul", header: "Judul" },
+  { accessorKey: "isi", header: "Isi Laporan" },
+  { accessorKey: "tanggalKejadian", header: "Tanggal Kejadian" },
+  { accessorKey: "lokasiKejadian", header: "Lokasi Kejadian" },
   {
-    noTiket: "TKT-001",
-    judul: "Tidak bisa login aplikasi",
-    stat: "Pending",
-  },
-  {
-    noTiket: "TKT-002",
-    judul: "Error saat upload dokumen",
-    stat: "Pending",
-  },
-  {
-    noTiket: "TKT-003",
-    judul: "Permintaan reset password",
-    stat: "Pending",
-  },
-  {
-    noTiket: "TKT-004",
-    judul: "Halaman dashboard lambat",
-    stat: "Pending",
-  },
-  {
-    noTiket: "TKT-005",
-    judul: "Data tidak muncul di laporan",
-    stat: "Pending",
+    accessorKey: "aksi",
+    header: "Aksi",
+    cell: ({ row }) =>
+      h("div", { class: "flex gap-2" }, [
+        h(
+          UButton,
+          {
+            size: "sm",
+            onClick: () => handleVerifikasiTerima(Number(row.id)),
+          },
+          () => "Verifikasi",
+        ),
+      ]),
   },
 ];
 </script>
@@ -35,9 +41,11 @@ const pendingTickets = [
 <template>
   <DataTable
     v-model:page="query.page"
-    :data="pendingTickets"
+    :data="data?.data ?? []"
     :columns="columns"
-    :loading="false"
+    :loading="status === 'pending'"
+    :total="data?.total ?? 0"
     enumerate
+    pagination
   />
 </template>

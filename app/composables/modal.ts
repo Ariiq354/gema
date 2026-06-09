@@ -1,4 +1,5 @@
 import ModalConfirm from "~/components/Modal/ModalConfirm.vue";
+import ModalTerima from "~/components/Modal/ModalTerima.vue";
 
 const overlay = useOverlay();
 export function openModal(
@@ -20,6 +21,20 @@ export function openConfirmModal(
     props: {
       path,
       body,
+      refresh,
+    },
+  });
+
+  modal.open();
+}
+
+export function openConfirmModalTerimaLaporan(
+  path: string,
+  refresh: () => void,
+) {
+  const modal = overlay.create(ModalTerima, {
+    props: {
+      path,
       refresh,
     },
   });

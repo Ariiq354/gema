@@ -5,7 +5,7 @@ defineProps<{
   placeholder?: string;
 }>();
 const show = ref(false);
-const password = defineModel<string>();
+const password = defineModel<string>({ required: true });
 </script>
 
 <template>

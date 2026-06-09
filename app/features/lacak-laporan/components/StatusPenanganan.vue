@@ -1,83 +1,268 @@
+<script setup lang="ts">
+import { computed } from "vue";
+
+interface IStatusHistory {
+  statusSebelumnya: "selesai" | "pending" | "proses" | null;
+  statusBaru: "selesai" | "pending" | "proses";
+  catatan: string | null;
+  tanggal: string | null;
+}
+
+export interface ITiketData {
+  instansi: string | null;
+  id: number;
+  noTiket: string;
+  jenis: "aspirasi" | "pengaduan" | "permintaan_informasi";
+  status: "selesai" | "pending" | "proses";
+  judul: string;
+  isi: string;
+  tanggalDibuat: string;
+  statusHistory: IStatusHistory[];
+}
+
+const props = defineProps<{
+  data: ITiketData;
+}>();
+
+const latestHistory = computed(() => {
+  return props.data.statusHistory?.[props.data.statusHistory.length - 1];
+});
+
+function formatDate(date?: string | null) {
+  if (!date) {
+    return "-";
+  }
+
+  return new Intl.DateTimeFormat("id-ID", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  }).format(new Date(date));
+}
+
+const statusLabel = computed(() => {
+  switch (props.data.status) {
+    case "pending":
+      return "Menunggu Verifikasi";
+
+    case "proses":
+      return "Sedang Diproses";
+
+    case "selesai":
+      return "Selesai";
+
+    default:
+      return props.data.status;
+  }
+});
+
+const currentStep = computed(() => {
+  switch (props.data.status) {
+    case "pending":
+      return 2;
+
+    case "proses":
+      return 3;
+
+    case "selesai":
+      return 4;
+
+    default:
+      return 1;
+  }
+});
+
+function getStepClass(step: number) {
+  if (currentStep.value === 4) {
+    return "bg-eucalyptus-700 text-white";
+  }
+
+  if (step < currentStep.value) {
+    return "bg-eucalyptus-700 text-white";
+  }
+
+  if (step === currentStep.value) {
+    return "bg-white border border-golden-grass-400 text-golden-grass-400";
+  }
+
+  return "bg-white-pointer-100 text-gray-400";
+}
+
+function getStepTextClass(step: number) {
+  if (currentStep.value === 4) {
+    return "text-black";
+  }
+
+  if (step < currentStep.value) {
+    return "text-black";
+  }
+
+  if (step === currentStep.value) {
+    return "text-golden-grass-400";
+  }
+
+  return "text-gray-400";
+}
+
+function getStepIcon(step: number) {
+  if (currentStep.value === 4) {
+    return "i-material-symbols-check-rounded";
+  }
+
+  if (step < currentStep.value) {
+    return "i-material-symbols-check-rounded";
+  }
+
+  if (step === currentStep.value) {
+    return "i-ant-design-hourglass-outlined";
+  }
+
+  return "i-material-symbols-check-rounded";
+}
+</script>
+
 <template>
   <!-- STATUS PENANGANAN -->
-  <div class="bg-white p-10 flex flex-col items-center justify-center gap-8 rounded-xl shadow-sm mt-8">
+  <div
+    class="bg-white p-10 flex flex-col items-center justify-center gap-8 rounded-xl shadow-sm mt-8"
+  >
     <div class="w-full flex items-start justify-between">
       <div class="flex flex-col gap-2">
         <p class="text-xl font-semibold">
           Status Penanganan
         </p>
+
         <p class="text-sm">
-          Update terakhir: <span>14 Okt 2024, 09:30 WIB</span>
+          Update terakhir:
+          <span>
+            {{
+              latestHistory?.tanggal
+                ? formatDate(latestHistory.tanggal)
+                : formatDate(data.tanggalDibuat)
+            }}
+          </span>
         </p>
       </div>
-      <div class="rounded-full bg-golden-grass-500 text-white px-4 py-1 flex items-center gap-2">
-        <UIcon name="i-mdi-rotate-3d-variant" class="rotate-90" />
-        <p>Sedang Diproses</p>
+
+      <div
+        class="rounded-full bg-golden-grass-500 text-white px-4 py-1 flex items-center gap-2"
+      >
+        <UIcon
+          name="i-mdi-rotate-3d-variant"
+          class="rotate-90"
+        />
+        <p>{{ statusLabel }}</p>
       </div>
     </div>
+
     <div class="w-full flex justify-evenly">
+      <!-- DIKIRIM -->
       <div class="flex flex-col items-center justify-center gap-3">
-        <div class="flex items-center justify-center rounded-full bg-eucalyptus-700 text-white w-12 h-12">
-          <UIcon name="i-material-symbols-check-rounded" class="text-2xl" />
+        <div
+          class="flex items-center justify-center rounded-full bg-eucalyptus-700 text-white w-12 h-12"
+        >
+          <UIcon
+            name="i-material-symbols-check-rounded"
+            class="text-2xl"
+          />
         </div>
+
         <div class="flex flex-col items-center justify-center">
           <p class="font-semibold text-black">
             Dikirim
           </p>
+
           <p class="text-sm">
-            12 Okt 2026, 10.00
+            {{ formatDate(data.tanggalDibuat) }}
           </p>
         </div>
       </div>
+
+      <!-- DIVERIFIKASI -->
       <div class="flex flex-col items-center justify-center gap-3">
-        <div class="flex items-center justify-center rounded-full bg-eucalyptus-700 text-white w-12 h-12">
-          <UIcon name="i-material-symbols-check-rounded" class="text-2xl" />
+        <div
+          class="flex items-center justify-center rounded-full w-12 h-12"
+          :class="getStepClass(2)"
+        >
+          <UIcon
+            :name="getStepIcon(2)"
+            class="text-2xl"
+          />
         </div>
+
         <div class="flex flex-col items-center justify-center">
-          <p class="font-semibold text-black">
+          <p
+            class="font-semibold"
+            :class="getStepTextClass(2)"
+          >
             Diverifikasi
           </p>
-          <p class="text-sm">
-            13 Okt 2026, 14.20
+
+          <p
+            class="text-sm"
+            :class="currentStep >= 2 ? '' : 'text-gray-400'"
+          >
+            {{ currentStep >= 2 ? "Aktif" : "Menunggu" }}
           </p>
         </div>
       </div>
+
+      <!-- DIPROSES -->
       <div class="flex flex-col items-center justify-center gap-3">
-        <div class="flex items-center justify-center rounded-full bg-white border border-golden-grass-400 text-golden-grass-400 w-12 h-12">
-          <UIcon name="i-ant-design-hourglass-outlined" class="text-2xl" />
+        <div
+          class="flex items-center justify-center rounded-full w-12 h-12"
+          :class="getStepClass(3)"
+        >
+          <UIcon
+            :name="getStepIcon(3)"
+            class="text-2xl"
+          />
         </div>
+
         <div class="flex flex-col items-center justify-center">
-          <p class="font-semibold text-golden-grass-400">
+          <p
+            class="font-semibold"
+            :class="getStepTextClass(3)"
+          >
             Diproses
           </p>
-          <p class="text-sm">
-            14 Okt 2026, 09.30
+
+          <p
+            class="text-sm"
+            :class="currentStep >= 3 ? '' : 'text-gray-400'"
+          >
+            {{ currentStep >= 3 ? "Aktif" : "Menunggu" }}
           </p>
         </div>
       </div>
+
+      <!-- SELESAI -->
       <div class="flex flex-col items-center justify-center gap-3">
-        <div class="flex items-center justify-center rounded-full bg-white-pointer-100 text-gray-400 w-12 h-12">
-          <UIcon name="i-mdi-comment-multiple-outline" class="text-2xl" />
+        <div
+          class="flex items-center justify-center rounded-full w-12 h-12"
+          :class="getStepClass(4)"
+        >
+          <UIcon
+            :name="getStepIcon(4)"
+            class="text-2xl"
+          />
         </div>
+
         <div class="flex flex-col items-center justify-center">
-          <p class="font-semibold  text-gray-400">
-            Ditanggapi
-          </p>
-          <p class="text-sm text-gray-400">
-            Menunggu
-          </p>
-        </div>
-      </div>
-      <div class="flex flex-col items-center justify-center gap-3">
-        <div class="flex items-center justify-center rounded-full bg-white-pointer-100 text-gray-400 w-12 h-12">
-          <UIcon name="i-iconoir-double-check" class="text-2xl" />
-        </div>
-        <div class="flex flex-col items-center justify-center">
-          <p class="font-semibold text-gray-400">
+          <p
+            class="font-semibold"
+            :class="getStepTextClass(4)"
+          >
             Selesai
           </p>
-          <p class="text-sm text-gray-400">
-            Menunggu
+
+          <p
+            class="text-sm"
+            :class="currentStep >= 4 ? '' : 'text-gray-400'"
+          >
+            {{ currentStep >= 4 ? "Selesai" : "Menunggu" }}
           </p>
         </div>
       </div>
@@ -86,101 +271,134 @@
 
   <div class="w-full flex gap-8">
     <!-- DETAIL LAPORAN -->
-    <div class="w-full bg-white p-10 flex flex-col items-start justify-center gap-8 rounded-xl shadow-sm mt-8">
-      <div class="w-full flex items-center justify-between pb-4 border-b border-gray-300">
+    <div
+      class="w-full bg-white p-10 flex flex-col items-start justify-center gap-8 rounded-xl shadow-sm mt-8"
+    >
+      <div
+        class="w-full flex items-center justify-between pb-4 border-b border-gray-300"
+      >
         <div class="flex items-center gap-2">
-          <UIcon name="i-line-md-file-document" class="text-eucalyptus-700 text-2xl" />
+          <UIcon
+            name="i-line-md-file-document"
+            class="text-eucalyptus-700 text-2xl"
+          />
           <p class="text-xl font-semibold">
             Detail Laporan
           </p>
         </div>
-        <div class="bg-white-pointer-100 rounded-md px-3 py-1 text-sm text-gray-500 font-semibold">
-          ID: GEMA-XXXX-XXXX
+
+        <div
+          class="bg-white-pointer-100 rounded-md px-3 py-1 text-sm text-gray-500 font-semibold"
+        >
+          ID: {{ data.noTiket }}
         </div>
       </div>
+
+      <p class="text-xl text-black font-semibold col-span-2">
+        {{ data.judul }}
+      </p>
 
       <div class="grid grid-cols-2 gap-6">
         <div class="flex flex-col">
           <p class="text-sm">
             Kategori
           </p>
+
           <p class="text-lg font-medium">
-            Pelayanan Publik KUA
+            {{ data.jenis.charAt(0).toUpperCase() + data.jenis.slice(1) }}
           </p>
         </div>
+
         <div class="flex flex-col">
           <p class="text-sm">
             Tanggal Kejadian
           </p>
-          <p class="text-lg font-medium">
-            10 Juni 2026
+
+          <p class="text-base font-medium">
+            {{ formatDate(data.tanggalDibuat) }}
           </p>
         </div>
+
         <div class="flex flex-col">
           <p class="text-sm">
             Lokasi
           </p>
+
           <p class="text-lg font-medium">
-            <UIcon name="i-material-symbols-location-on-outline" class="text-eucalyptus-700" />
-            KUA Kecamatan Bogor Tengah
+            <UIcon
+              name="i-material-symbols-location-on-outline"
+              class="text-eucalyptus-700"
+            />
+            {{ data.instansi }}
           </p>
         </div>
       </div>
 
-      <div class="bg-white-pointer-100 rounded-xl p-4 flex flex-col gap-2">
+      <div
+        class="w-full bg-white-pointer-100 rounded-xl p-4 flex flex-col gap-2"
+      >
         <p class="text-sm">
           Deskripsi Aduan
         </p>
+
         <p class="text-black text-base">
-          Terdapat keterlambatan penerbitan dokumen pencatatan nikah yang dijanjikan selesai dalam 3 hari kerja, namun hingga saat ini (sudah 1 minggu) belum ada kejelasan. Petugas kurang responsif saat dihubungi.
+          {{ data.isi }}
         </p>
       </div>
     </div>
 
-    <!-- TANGGAPAN PETUGAS -->
-    <div class="w-3/5 bg-white p-10 rounded-xl shadow-sm mt-8 border-l-4 border-eucalyptus-700">
+    <!-- RIWAYAT STATUS -->
+    <div
+      class="w-3/5 bg-white p-10 rounded-xl shadow-sm mt-8 border-l-4 border-eucalyptus-700"
+    >
       <div class="relative">
         <div class="flex items-center gap-2">
-          <UIcon name="i-mdi-comment-multiple-outline" class="text-eucalyptus-700 text-4xl" />
+          <UIcon
+            name="i-mdi-comment-multiple-outline"
+            class="text-eucalyptus-700 text-2xl"
+          />
           <p class="text-xl font-semibold">
-            Tanggapan Petugas
+            Riwayat Status
           </p>
         </div>
-        <!-- <div class="absolute">
-          <UIcon name="i-si-shield-police-fill" class="text-gray-100 text-8xl" />
-        </div> -->
       </div>
 
       <div class="border-l-2 pl-4 border-white-pointer-100 mt-5">
-        <div class="relative flex flex-col text-sm mb-8">
-          <div class="absolute -left-6 top-1 rounded-full w-3.5 h-3.5 bg-eucalyptus-700 border-2 border-white" />
+        <div
+          v-for="(item, index) in data.statusHistory"
+          :key="index"
+          class="relative flex flex-col text-sm mb-8"
+        >
+          <div
+            class="absolute -left-6 top-1 rounded-full w-3.5 h-3.5 bg-eucalyptus-700 border-2 border-white"
+          />
 
           <p class="text-eucalyptus-700 font-semibold">
-            Admin Kemenag Bogor
+            Sistem GEMA
           </p>
+
           <p class="mb-2 text-xs">
-            14 Okt 2026. 09.30
+            {{ formatDate(item.tanggal) }}
           </p>
-          <div class="bg-white-pointer-100 rounded-xl py-3 px-4 flex flex-col gap-2">
+
+          <div
+            class="bg-white-pointer-100 rounded-xl py-3 px-4 flex flex-col gap-2"
+          >
+            <p class="font-medium">
+              Status: {{ item.statusBaru }}
+            </p>
+
             <p class="text-black text-base">
-              Laporan Anda sedang kami teruskan ke Kepala KUA Bogor Tengah untuk klarifikasi lebih lanjut. Mohon menunggu update selanjutnya.
+              {{ item.catatan }}
             </p>
           </div>
         </div>
-        <div class="relative flex flex-col text-sm">
-          <div class="absolute -left-6 top-1 rounded-full w-3.5 h-3.5 bg-gray-300 border-2 border-white" />
 
-          <p class="text-gray-500 font-semibold">
-            Sistem GEMA
-          </p>
-          <p class="mb-2 text-xs text-gray-400">
-            14 Okt 2026. 09.30
-          </p>
-          <div class="bg-gray-100 rounded-xl py-3 px-4 flex flex-col gap-2">
-            <p class="text-gray-400 text-base">
-              Laporan Anda sedang kami teruskan ke Kepala KUA Bogor Tengah untuk klarifikasi lebih lanjut. Mohon menunggu update selanjutnya.
-            </p>
-          </div>
+        <div
+          v-if="!data.statusHistory?.length"
+          class="text-gray-400 text-sm"
+        >
+          Belum ada riwayat status.
         </div>
       </div>
     </div>

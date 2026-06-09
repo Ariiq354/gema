@@ -3,17 +3,18 @@ import { z } from "zod";
 export const baseSchema = z.object({
   judul: z.string().min(1, "Judul laporan wajib diisi"),
   isi: z.string().min(1, "Isi laporan wajib diisi"),
-  files: z.optional(
-    z
-      .file()
-      .max(5_000_000)
-      .mime([
-        "application/pdf",
-        "application/msword",
-        "image/jpeg",
-        "image/png",
-      ]),
-  ),
+  idInstansi: z.number().min(1).optional(),
+  // files: z.optional(
+  //   z
+  //     .file()
+  //     .max(5_000_000)
+  //     .mime([
+  //       "application/pdf",
+  //       "application/msword",
+  //       "image/jpeg",
+  //       "image/png",
+  //     ]),
+  // ),
 });
 
 export const pengaduanSchema = z.object({
@@ -49,7 +50,8 @@ export const initialFormDataPengaduan: z.infer<typeof pengaduanSchema> = {
   isi: "",
   tanggalKejadian: "",
   lokasiKejadian: "",
-  files: undefined,
+  idInstansi: undefined,
+  // files: undefined,
 };
 
 export const initialFormDataAspirasi: z.infer<typeof aspirasiSchema> = {
@@ -57,7 +59,7 @@ export const initialFormDataAspirasi: z.infer<typeof aspirasiSchema> = {
   judul: "",
   isi: "",
   asalPelapor: "",
-  files: undefined,
+  // files: undefined,
 };
 
 export const initialFormDataPermintaanInformasi: z.infer<
@@ -67,7 +69,7 @@ export const initialFormDataPermintaanInformasi: z.infer<
   judul: "",
   isi: "",
   asalPelapor: "",
-  files: undefined,
+  // files: undefined,
 };
 
 export const initialFormDataByJenis = {

@@ -8,7 +8,19 @@ export const columns = [
     header: "Judul",
   },
   {
-    accessorKey: "stat",
-    header: "Status",
+    accessorKey: "isi",
+    header: "Isi Laporan",
+  },
+  {
+    accessorKey: "tanggalKejadian",
+    header: "Tanggal Kejadian",
+  },
+  {
+    accessorKey: "lokasiKejadian",
+    header: "Lokasi Kejadian",
+  },
+  {
+    accessorKey: "aksi",
+    header: "Aksi",
   },
 ];
