@@ -13,5 +13,5 @@ export const db = drizzle({
     ...tiket,
   },
   casing: "snake_case",
-  logger: new EnhancedQueryLogger(),
+  logger: env.LOGGER ? new EnhancedQueryLogger() : undefined,
 });
