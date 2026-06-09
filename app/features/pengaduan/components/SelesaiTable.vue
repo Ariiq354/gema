@@ -1,18 +1,13 @@
 <script setup lang="ts">
 import type { ColumnDef } from "@tanstack/vue-table";
-import { h } from "vue";
-import { UButton } from "#components";
+import { UBadge } from "#components";
 import DataTable from "~/components/Custom/DataTable.vue";
 
-const query = ref({ page: 1, status: "pending" });
+const query = ref({ page: 1, status: "selesai" });
 
-const { data, status, refresh } = await useFetch("/api/v1/tiket/admin/pengaduan", {
+const { data, status } = await useFetch("/api/v1/tiket/admin/pengaduan", {
   query,
 });
-
-async function handleVerifikasiTerima(id: number) {
-  openConfirmModalTerimaLaporan(`/api/v1/tiket/admin/${id}/diterima`, refresh);
-}
 
 const columns: ColumnDef<any>[] = [
   { accessorKey: "noTiket", header: "No Tiket" },
@@ -20,22 +15,16 @@ const columns: ColumnDef<any>[] = [
   { accessorKey: "isi", header: "Isi Laporan" },
   { accessorKey: "tanggalKejadian", header: "Tanggal Kejadian" },
   { accessorKey: "lokasiKejadian", header: "Lokasi Kejadian" },
-  {
-    accessorKey: "aksi",
-    header: "Aksi",
-    cell: ({ row }) =>
-      h("div", { class: "flex gap-2" }, [
-        h(
-          UButton,
-          {
-            size: "sm",
-            class: "cursor-pointer",
-            onClick: () => handleVerifikasiTerima(row.original.id),
-          },
-          () => "Verifikasi",
-        ),
-      ]),
-  },
+  { accessorKey: "status", header: "Status", cell: ({ row }) =>
+    h(
+      UBadge,
+      {
+        size: "lg",
+        color: "success",
+        variant: "subtle",
+      },
+      () => row.original.status,
+    ) },
 ];
 </script>
 

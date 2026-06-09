@@ -10,7 +10,8 @@ const props = defineProps<{
 const emit = defineEmits(["close"]);
 
 const loading = ref(false);
-const catatan = ref("");
+const isiRespon = ref("");
+const dibuatOleh = ref("");
 
 async function onClick() {
   loading.value = true;
@@ -19,12 +20,13 @@ async function onClick() {
     await $fetch(props.path, {
       method: "POST",
       body: {
-        catatan: catatan.value || "Laporan Diterima",
+        isiRespon: isiRespon.value || "Laporan Sudah Kami Tindak Lanjut ke Instansi Terkait, Terima kasih.",
+        dibuatOleh: dibuatOleh.value || "Sistem Gema",
       },
       credentials: "include",
     });
 
-    useToastSuccess("Success", "Verifikasi Laporan Diterima!");
+    useToastSuccess("Success", "Proses Balasan Laporan Berhasil Dikirim!");
     props.refresh();
     emit("close", false);
   }
@@ -36,7 +38,7 @@ async function onClick() {
       );
     }
     else {
-      useToastError("Failed", "Gagal Verifikasi Terima Laporan!");
+      useToastError("Failed", "Gagal Proses Laporan!");
     }
   }
   finally {
@@ -48,27 +50,27 @@ async function onClick() {
 <template>
   <UModal
     :ui="{ body: 'sm:max-w-lg' }"
+    title="Proses Laporan"
   >
     <template #body>
       <div class="space-y-5">
-        <div class="flex flex-col items-center gap-4">
-          <UIcon
-            name="i-lucide-circle-question-mark"
-            size="72"
-            class="text-primary"
-          />
-          <span class="font-semibold text-lg">Verifikasi Terima Laporan?</span>
-        </div>
-
-        <div>
+        <div class="space-y-5">
           <label class="mb-2 block text-sm font-medium">
             Catatan
           </label>
-
           <UTextarea
-            v-model="catatan"
-            :rows="4"
-            placeholder="Laporan Diterima"
+            v-model="isiRespon"
+            :rows="8"
+            placeholder="Laporan Sudah Kami Tindak Lanjut ke Instansi Terkait, Terima kasih."
+            class="w-full"
+          />
+
+          <label class="mb-2 block text-sm font-medium">
+            Nama Petugas
+          </label>
+          <UInput
+            v-model="dibuatOleh"
+            placeholder="Sistem Gema"
             class="w-full"
           />
         </div>

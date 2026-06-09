@@ -2,6 +2,7 @@
 import type { TabsItem } from "@nuxt/ui";
 import DiterimaTable from "./components/DiterimaTable.vue";
 import PendingTable from "./components/PendingTable.vue";
+import SelesaiTable from "./components/SelesaiTable.vue";
 
 const items: TabsItem[] = [
   {
@@ -32,7 +33,7 @@ const items: TabsItem[] = [
         <DiterimaTable />
       </template>
       <template #selesai>
-        <DiterimaTable />
+        <SelesaiTable />
       </template>
     </UTabs>
   </div>
