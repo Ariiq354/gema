@@ -92,7 +92,7 @@ export interface FindAllResultMap {
 export const getTiketRequestSchema = z.object({
   ...paginationSearchSchema.shape,
   idInstansi: z.number().optional(),
-  jenis: z.enum(["pengaduan", "aspirasi", "permintaan_informasi"]).optional(),
+  status: z.enum(["pending", "proses", "selesai"]).optional(),
 });
 
 export type GetTiketRequestSchema = z.infer<typeof getTiketRequestSchema>;
