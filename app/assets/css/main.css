@@ -9,17 +9,17 @@
 @theme static {
   --font-display: "Poppins", sans-serif;
 
-  --color-eucalyptus-50: #edfcf5;
-  --color-eucalyptus-100: #d2f9e4;
-  --color-eucalyptus-200: #a9f1ce;
-  --color-eucalyptus-300: #72e3b3;
-  --color-eucalyptus-400: #39ce93;
-  --color-eucalyptus-500: #15b47b;
-  --color-eucalyptus-600: #09885d;
-  --color-eucalyptus-700: #087452;
-  --color-eucalyptus-800: #095c42;
-  --color-eucalyptus-900: #084c38;
-  --color-eucalyptus-950: #032b20;
+  --color-eucalyptus-50: #d7ffec;
+  --color-eucalyptus-100: #caf3df;
+  --color-eucalyptus-200: #a5e5c7;
+  --color-eucalyptus-300: #78cfa9;
+  --color-eucalyptus-400: #58af8a;
+  --color-eucalyptus-500: #338d6a;
+  --color-eucalyptus-600: #097251;
+  --color-eucalyptus-700: #005b3b;
+  --color-eucalyptus-800: #004229;
+  --color-eucalyptus-900: #002e1a;
+  --color-eucalyptus-950: #001f0d;
 
   --color-golden-grass-50: #fcfaea;
   --color-golden-grass-100: #f9f3c8;
