@@ -11,8 +11,8 @@ export abstract class InstansiService {
     return await InstansiRepo.findAll(query);
   }
 
-  static async findAllInstansiActive(query: PaginationSearchSchema) {
-    return await InstansiRepo.findAll(query, true);
+  static async findAllInstansiActive() {
+    return await InstansiRepo.findAllActive();
   }
 
   static async updateInstansi(id: number, payload: CreateInstansiSchema) {

@@ -9,6 +9,16 @@ export abstract class InstansiRepo {
     await db.insert(instansiTable).values(payload);
   };
 
+  static async findAllActive() {
+    return db.select({
+      id: instansiTable.id,
+      nama: instansiTable.nama,
+    })
+      .from(instansiTable)
+      .where(eq(instansiTable.isActive, true))
+      .orderBy(desc(instansiTable.id));
+  }
+
   static async findAll(query: PaginationSearchSchema, isActive?: boolean) {
     const offset = (query.page - 1) * query.limit;
 
