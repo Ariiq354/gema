@@ -6,11 +6,12 @@ const { data: listInstansi, pending } = await useLazyFetch("/api/v1/instansi/act
 <template>
   <USelectMenu
     v-model="id"
-    :items="listInstansi"
+    placeholder="Pilih Instansi Tujuan"
     class="w-full"
     label-key="nama"
     value-key="id"
-    placeholder="Pilih Instansi Tujuan"
+    :items="listInstansi"
     :loading="pending"
+    clear
   />
 </template>
