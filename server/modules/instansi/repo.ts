@@ -1,3 +1,4 @@
+import type { SQL } from "drizzle-orm";
 import type { PaginationSearchSchema } from "~~/server/utils/schema";
 import type { CreateInstansiSchema } from "./model";
 import { desc, eq, ilike, inArray } from "drizzle-orm";
@@ -28,12 +29,13 @@ export abstract class InstansiRepo {
       isActive: instansiTable.isActive,
     }).from(instansiTable).orderBy(desc(instansiTable.id));
 
+    const conditions: (SQL<unknown> | undefined)[] = [];
     if (query.search) {
-      qb.where(ilike(instansiTable.nama, `%${query.search}%`));
+      conditions.push(ilike(instansiTable.nama, `%${query.search}%`));
     }
 
     if (isActive !== undefined) {
-      qb.where(eq(instansiTable.isActive, isActive));
+      conditions.push(eq(instansiTable.isActive, isActive));
     }
 
     const total = await db.$count(qb);

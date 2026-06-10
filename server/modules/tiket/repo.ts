@@ -1,3 +1,4 @@
+import type { SQL } from "drizzle-orm";
 import type {
   CreateTiketDiterimaSchema,
   CreateTiketResponseSchema,
@@ -6,7 +7,7 @@ import type {
   GetTiketRequestSchema,
   Jenis,
 } from "./model";
-import { desc, eq, ilike } from "drizzle-orm";
+import { desc, eq, ilike, or } from "drizzle-orm";
 import { db } from "~~/server/database";
 import { instansiTable } from "~~/server/database/schema/instansi";
 import {
@@ -173,16 +174,25 @@ export abstract class TiketRepo {
         break;
     }
 
+    const conditions: (SQL<unknown> | undefined)[] = [];
+
     if (query.search) {
-      qb.where(ilike(instansiTable.nama, `%${query.search}%`));
+      const searchCondition = `%${query.search}%`;
+      conditions.push(
+        or(
+          ilike(tiketTable.noTiket, searchCondition),
+          ilike(tiketTable.judul, searchCondition),
+          ilike(tiketTable.isi, searchCondition),
+        ),
+      );
     }
 
     if (query.idInstansi) {
-      qb.where(eq(tiketTable.idInstansi, query.idInstansi));
+      conditions.push(eq(tiketTable.idInstansi, query.idInstansi));
     }
 
     if (query.status) {
-      qb.where(eq(tiketTable.status, query.status));
+      conditions.push(eq(tiketTable.status, query.status));
     }
 
     const total = await db.$count(qb);
