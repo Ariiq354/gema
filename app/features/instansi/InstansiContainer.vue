@@ -10,7 +10,7 @@ const modalOpen = ref(false);
 
 const state = shallowRef(getInitialFormData());
 
-const query = ref<PageSearch>({ page: 1 });
+const query = ref<PageSearch>({ page: 1, search: "" });
 
 const { data, status, refresh } = await useFetch("/api/v1/instansi", {
   query,
@@ -37,32 +37,45 @@ function clickUpdate(itemData: ExtractFetchData<typeof data>[number]) {
     v-model:state="state"
     @submit="refresh"
   />
-  <main class="flex flex-col container">
-    <div class="mb-4 flex gap-2 md:mb-6 md:gap-4">
-      <InputSearch :model-value="query.search" @update:model-value="ObjectAssign(query, { search: $event, page: 1 })" />
-      <UButton
-        icon="i-lucide-plus"
-        class="text-white dark:bg-blue-600 hover:dark:bg-blue-600/75"
-        @click="clickAdd"
-      >
-        <p class="hidden md:block">
-          Tambah
-        </p>
-      </UButton>
+  <main class="w-full bg-[#F8F7FA]">
+    <div class="container py-6 border-b border-gray-200">
+      <h1 class="text-4xl text-primary-700 font-bold">
+        Daftar Instansi
+      </h1>
     </div>
-    <DataTable
-      v-model:page="query.page"
-      :columns="columns"
-      :data="data?.data ?? []"
-      :loading="status === 'pending'"
-      :total="data?.total ?? 0"
-      enumerate
-      deletable
-      editable
-      selectable
-      pagination
-      @edit="clickUpdate"
-      @delete="clickDelete"
-    />
+
+    <div class="container my-6">
+      <div class="rounded-lg bg-white p-5 shadow-sm mb-4 flex gap-2 md:mb-6 md:gap-4">
+        <InputSearch :model-value="query.search" @update:model-value="ObjectAssign(query, { search: $event, page: 1 })" />
+        <UButton
+          icon="i-lucide-plus"
+          class="text-white dark:bg-blue-600 hover:dark:bg-blue-600/75"
+          @click="clickAdd"
+        >
+          <p class="hidden md:block">
+            Tambah
+          </p>
+        </UButton>
+      </div>
+      <div class="rounded-lg bg-white shadow-sm p-5 mt-8">
+        <h2 class="mb-4 text-lg font-semibold">
+          Table Daftar Instansi
+        </h2>
+        <DataTable
+          v-model:page="query.page"
+          :columns="columns"
+          :data="data?.data ?? []"
+          :loading="status === 'pending'"
+          :total="data?.total ?? 0"
+          enumerate
+          deletable
+          editable
+          selectable
+          pagination
+          @edit="clickUpdate"
+          @delete="clickDelete"
+        />
+      </div>
+    </div>
   </main>
 </template>
