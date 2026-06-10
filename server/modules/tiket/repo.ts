@@ -7,7 +7,7 @@ import type {
   GetTiketRequestSchema,
   Jenis,
 } from "./model";
-import { desc, eq, ilike, or } from "drizzle-orm";
+import { and, desc, eq, ilike, or } from "drizzle-orm";
 import { db } from "~~/server/database";
 import { instansiTable } from "~~/server/database/schema/instansi";
 import {
@@ -194,6 +194,8 @@ export abstract class TiketRepo {
     if (query.status) {
       conditions.push(eq(tiketTable.status, query.status));
     }
+
+    qb.where(and(...conditions));
 
     const total = await db.$count(qb);
     const data = await qb.limit(query.limit).offset(offset);
