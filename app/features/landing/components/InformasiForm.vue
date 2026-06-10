@@ -15,22 +15,11 @@ const state = reactive({ ...initialFormDataPermintaanInformasi });
 const { data, isLoading, execute } = useSubmit();
 
 async function onSubmit(event: FormSubmitEvent<PermintaanInformasiFormSchema>) {
-  const formDataPayload = event.data;
   isLoading.value = true;
-
-  const bodyFormData = new FormData();
-  bodyFormData.append("jenis", formDataPayload.jenis);
-  bodyFormData.append("judul", formDataPayload.judul);
-  bodyFormData.append("isi", formDataPayload.isi);
-  bodyFormData.append("asalPelapor", formDataPayload.asalPelapor);
-
-  if (formDataPayload.files) {
-    bodyFormData.append("files", formDataPayload.files);
-  }
 
   await execute({
     path: "/api/v1/tiket",
-    body: bodyFormData,
+    body: event.data,
     method: "POST",
     onSuccess() {
       if (data.value) {
@@ -69,6 +58,13 @@ async function onSubmit(event: FormSubmitEvent<PermintaanInformasiFormSchema>) {
         />
       </UFormField>
 
+      <UFormField
+        label="Instansi Tujuan"
+        name="idInstansi"
+      >
+        <OptionInstansi v-model="state.idInstansi" />
+      </UFormField>
+
       <UFormField label="Asal Pelapor" name="asalPelapor">
         <UInput
           v-model="state.asalPelapor"
@@ -77,7 +73,7 @@ async function onSubmit(event: FormSubmitEvent<PermintaanInformasiFormSchema>) {
         />
       </UFormField>
 
-      <UFileUpload
+      <!-- <UFileUpload
         v-slot="{ open }"
         v-model="state.files"
         :disabled="isLoading"
@@ -120,7 +116,7 @@ async function onSubmit(event: FormSubmitEvent<PermintaanInformasiFormSchema>) {
             class="size-5 text-gray-400 hover:text-gray-600"
           />
         </button>
-      </div>
+      </div> -->
 
       <UButton
         class="w-full bg-eucalyptus-600 hover:bg-eucalyptus-700 text-white text-base flex justify-center py-3 rounded-lg font-semibold cursor-pointer"

@@ -3,7 +3,19 @@ import type { ColumnDef } from "@tanstack/vue-table";
 import { UBadge } from "#components";
 import DataTable from "~/components/Custom/DataTable.vue";
 
-const query = ref({ page: 1, status: "selesai" });
+const props = defineProps<{
+  search: string;
+  idInstansi?: number;
+}>();
+
+const page = ref(1);
+
+const query = computed(() => ({
+  page: page.value,
+  status: "selesai",
+  search: props.search,
+  idInstansi: props.idInstansi,
+}));
 
 const { data, status } = await useFetch("/api/v1/tiket/admin/pengaduan", {
   query,
@@ -29,11 +41,18 @@ const columns: ColumnDef<any>[] = [
 </script>
 
 <template>
+  <div v-if="status === 'pending'" class="py-10 flex justify-center">
+    <UIcon
+      name="i-lucide-loader-circle"
+      class="size-8 animate-spin text-primary"
+    />
+  </div>
+
   <DataTable
-    v-model:page="query.page"
+    v-else
+    v-model:page="page"
     :data="data?.data ?? []"
     :columns="columns"
-    :loading="status === 'pending'"
     :total="data?.total ?? 0"
     enumerate
     pagination

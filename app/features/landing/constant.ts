@@ -3,7 +3,7 @@ import { z } from "zod";
 export const baseSchema = z.object({
   judul: z.string().min(1, "Judul laporan wajib diisi"),
   isi: z.string().min(1, "Isi laporan wajib diisi"),
-  idInstansi: z.number().min(1).optional(),
+  idInstansi: z.number().optional(),
   // files: z.optional(
   //   z
   //     .file()

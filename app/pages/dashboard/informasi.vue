@@ -1,13 +1,15 @@
 <script setup lang="ts">
+import PermintaanInformasiContainer from "~/features/permintaan-informasi/PermintaanInformasiContainer.vue";
+
+useHead({
+  title: "Gema - Permintaan Informasi",
+});
+
 definePageMeta({
   layout: "dashboard",
 });
 </script>
 
 <template>
-  <div>
-    <h1 class="text-black">
-      ini informasi
-    </h1>
-  </div>
+  <PermintaanInformasiContainer />
 </template>

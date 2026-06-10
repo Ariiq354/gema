@@ -12,7 +12,7 @@ const appliedSearch = ref("");
 const appliedInstansi = ref<number>();
 
 function handleSearch() {
-  appliedSearch.value = search.value;
+  appliedSearch.value = search.value.trim();
   appliedInstansi.value = idInstansi.value;
 }
 
@@ -39,7 +39,7 @@ const items: TabsItem[] = [
   <section class="w-full bg-[#F8F7FA]">
     <div class="container py-6 border-b border-gray-200">
       <h1 class="text-4xl text-primary-700 font-bold">
-        Manajemen Pengaduan
+        Manajemen Aspirasi
       </h1>
     </div>
 

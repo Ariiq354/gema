@@ -13,25 +13,24 @@ const page = ref(1);
 
 const query = computed(() => ({
   page: page.value,
-  status: "proses",
+  status: "pending",
   search: props.search,
   idInstansi: props.idInstansi,
 }));
 
-const { data, status, refresh } = await useFetch("/api/v1/tiket/admin/pengaduan", {
+const { data, status, refresh } = await useFetch("/api/v1/tiket/admin/permintaan-informasi", {
   query,
 });
 
 async function handleVerifikasiTerima(id: number) {
-  openConfirmModalProsesLaporan(`/api/v1/tiket/admin/${id}/selesai`, refresh);
+  openConfirmModalTerimaLaporan(`/api/v1/tiket/admin/${id}/diterima`, refresh);
 }
 
 const columns: ColumnDef<any>[] = [
   { accessorKey: "noTiket", header: "No Tiket" },
   { accessorKey: "judul", header: "Judul" },
   { accessorKey: "isi", header: "Isi Laporan" },
-  { accessorKey: "tanggalKejadian", header: "Tanggal Kejadian" },
-  { accessorKey: "lokasiKejadian", header: "Lokasi Kejadian" },
+  { accessorKey: "asalPelapor", header: "Asal Pelapor" },
   {
     accessorKey: "aksi",
     header: "Aksi",
@@ -41,10 +40,10 @@ const columns: ColumnDef<any>[] = [
           UButton,
           {
             size: "sm",
-            class: "bg-golden-grass-500 hover:bg-golden-grass-600 cursor-pointer",
+            class: "cursor-pointer",
             onClick: () => handleVerifikasiTerima(row.original.id),
           },
-          () => "Proses",
+          () => "Verifikasi",
         ),
       ]),
   },

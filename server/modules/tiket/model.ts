@@ -4,7 +4,7 @@ import { paginationSearchSchema } from "~~/server/utils/schema";
 const baseSchema = z.object({
   judul: z.string().min(1),
   isi: z.string().min(1),
-  idInstansi: z.number().min(1),
+  idInstansi: z.number().optional(),
 });
 
 const pengaduanSchema = z.object({

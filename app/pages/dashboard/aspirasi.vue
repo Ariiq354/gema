@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import AspirasiContainer from "~/features/aspirasi/AspirasiContainer.vue";
+
 useHead({
   title: "Gema - Aspirasi",
 });
@@ -9,9 +11,5 @@ definePageMeta({
 </script>
 
 <template>
-  <div>
-    <h1 class="text-black">
-      ini aspirasi
-    </h1>
-  </div>
+  <AspirasiContainer />
 </template>

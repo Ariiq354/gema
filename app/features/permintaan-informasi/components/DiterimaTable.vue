@@ -18,7 +18,7 @@ const query = computed(() => ({
   idInstansi: props.idInstansi,
 }));
 
-const { data, status, refresh } = await useFetch("/api/v1/tiket/admin/pengaduan", {
+const { data, status, refresh } = await useFetch("/api/v1/tiket/admin/permintaan-informasi", {
   query,
 });
 
@@ -30,8 +30,7 @@ const columns: ColumnDef<any>[] = [
   { accessorKey: "noTiket", header: "No Tiket" },
   { accessorKey: "judul", header: "Judul" },
   { accessorKey: "isi", header: "Isi Laporan" },
-  { accessorKey: "tanggalKejadian", header: "Tanggal Kejadian" },
-  { accessorKey: "lokasiKejadian", header: "Lokasi Kejadian" },
+  { accessorKey: "asalPelapor", header: "Asal Pelapor" },
   {
     accessorKey: "aksi",
     header: "Aksi",

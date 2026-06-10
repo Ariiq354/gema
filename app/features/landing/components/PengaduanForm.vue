@@ -67,7 +67,12 @@ async function onSubmit(event: FormSubmitEvent<PengaduanFormSchema>) {
         />
       </UFormField>
 
-      <OptionInstansi v-model="state.idInstansi" />
+      <UFormField
+        label="Instansi Tujuan"
+        name="idInstansi"
+      >
+        <OptionInstansi v-model="state.idInstansi" />
+      </UFormField>
 
       <UFormField label="Lokasi Kejadian" name="lokasiKejadian">
         <UInput
