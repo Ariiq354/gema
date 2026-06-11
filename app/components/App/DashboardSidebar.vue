@@ -10,7 +10,7 @@ const items: NavigationMenuItem[][] = [
     },
     {
       label: "Daftar Instansi",
-      icon: "i-lucide-layout-dashboard",
+      icon: "i-lucide-building-2",
       to: "/dashboard/instansi",
     },
     {

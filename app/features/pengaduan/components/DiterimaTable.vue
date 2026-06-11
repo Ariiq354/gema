@@ -1,8 +1,10 @@
 <script setup lang="ts">
-import type { ColumnDef } from "@tanstack/vue-table";
+import type { TableColumn } from "@nuxt/ui";
 import { h } from "vue";
 import { UButton } from "#components";
 import DataTable from "~/components/Custom/DataTable.vue";
+import ModalProses from "~/components/Modal/ModalProses.vue";
+import { baseColumns } from "../constants";
 
 const props = defineProps<{
   search: string;
@@ -10,10 +12,9 @@ const props = defineProps<{
 }>();
 
 const page = ref(1);
-
 const query = computed(() => ({
   page: page.value,
-  status: "proses",
+  status: "pending",
   search: props.search,
   idInstansi: props.idInstansi,
 }));
@@ -23,15 +24,11 @@ const { data, status, refresh } = await useLazyFetch("/api/v1/tiket/admin/pengad
 });
 
 async function handleVerifikasiTerima(id: number) {
-  openConfirmModalProsesLaporan(`/api/v1/tiket/admin/${id}/selesai`, refresh);
+  openModal(ModalProses, { path: `/api/v1/tiket/admin/${id}/selesai`, refresh });
 }
 
-const columns: ColumnDef<any>[] = [
-  { accessorKey: "noTiket", header: "No Tiket" },
-  { accessorKey: "judul", header: "Judul" },
-  { accessorKey: "isi", header: "Isi Laporan" },
-  { accessorKey: "tanggalKejadian", header: "Tanggal Kejadian" },
-  { accessorKey: "lokasiKejadian", header: "Lokasi Kejadian" },
+const columns: TableColumn<any>[] = [
+  ...baseColumns,
   {
     accessorKey: "aksi",
     header: "Aksi",
@@ -53,7 +50,7 @@ const columns: ColumnDef<any>[] = [
 
 <template>
   <DataTable
-    v-model:page="page"
+    v-model:page="query.page"
     :data="data?.data ?? []"
     :columns="columns"
     :total="data?.total ?? 0"

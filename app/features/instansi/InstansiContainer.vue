@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { ExtractFetchData, PageSearch } from "~/utils/types";
 import InputSearch from "~/components/Custom/InputSearch.vue";
-import { openConfirmModal } from "~/composables/modal";
+import ModalConfirm from "~/components/Modal/ModalConfirm.vue";
 import { ObjectAssign } from "~/utils";
 import CreateModal from "./components/CreateModal.vue";
 import { columns, getInitialFormData } from "./constants";
@@ -17,7 +17,7 @@ const { data, status, refresh } = await useFetch("/api/v1/instansi", {
 });
 
 async function clickDelete(ids: number[]) {
-  openConfirmModal("/api/v1/instansi", { ids }, refresh);
+  openModal(ModalConfirm, { path: "/api/v1/instansi", body: { ids }, refresh });
 }
 
 function clickAdd() {

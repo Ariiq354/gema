@@ -8,14 +8,6 @@ import SelesaiTable from "./components/SelesaiTable.vue";
 const search = ref("");
 const idInstansi = ref<number>();
 
-const appliedSearch = ref("");
-const appliedInstansi = ref<number>();
-
-function handleSearch() {
-  appliedSearch.value = search.value;
-  appliedInstansi.value = idInstansi.value;
-}
-
 const items: TabsItem[] = [
   {
     label: "Pending",
@@ -45,26 +37,19 @@ const items: TabsItem[] = [
 
     <div class="container my-6">
       <div class="rounded-lg bg-white shadow-sm flex gap-4 p-5">
-        <UInput v-model="search" placeholder="Search.." />
+        <InputSearch v-model="search" placeholder="Search.." />
         <OptionInstansi v-model="idInstansi" />
-        <UButton
-          icon="i-lucide-search"
-          class="bg-primary px-4 cursor-pointer"
-          @click="handleSearch"
-        >
-          Cari
-        </UButton>
       </div>
       <div class="rounded-lg bg-white shadow-sm flex items-center p-5 mt-8">
         <UTabs :items="items" class="w-full" variant="link">
           <template #pending>
-            <PendingTable :search="appliedSearch" :id-instansi="appliedInstansi" :search-trigger="handleSearch" />
+            <PendingTable :search="search" :id-instansi="idInstansi" />
           </template>
           <template #diterima>
-            <DiterimaTable :search="appliedSearch" :id-instansi="appliedInstansi" :search-trigger="handleSearch" />
+            <DiterimaTable :search="search" :id-instansi="idInstansi" />
           </template>
           <template #selesai>
-            <SelesaiTable :search="appliedSearch" :id-instansi="appliedInstansi" :search-trigger="handleSearch" />
+            <SelesaiTable :search="search" :id-instansi="idInstansi" />
           </template>
         </UTabs>
       </div>

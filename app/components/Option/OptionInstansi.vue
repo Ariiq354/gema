@@ -4,14 +4,12 @@ const { data: listInstansi, pending } = await useLazyFetch("/api/v1/instansi/act
 </script>
 
 <template>
-  <USelectMenu
+  <ClearableSelectMenu
     v-model="id"
     placeholder="Pilih Instansi Tujuan"
-    class="w-full"
     label-key="nama"
     value-key="id"
     :items="listInstansi"
     :loading="pending"
-    clear
   />
 </template>

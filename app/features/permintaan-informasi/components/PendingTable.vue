@@ -1,8 +1,10 @@
 <script setup lang="ts">
-import type { ColumnDef } from "@tanstack/vue-table";
+import type { TableColumn } from "@nuxt/ui";
 import { h } from "vue";
 import { UButton } from "#components";
 import DataTable from "~/components/Custom/DataTable.vue";
+import ModalTerima from "~/components/Modal/ModalTerima.vue";
+import { baseColumns } from "../constants";
 
 const props = defineProps<{
   search: string;
@@ -23,14 +25,11 @@ const { data, status, refresh } = await useLazyFetch("/api/v1/tiket/admin/permin
 });
 
 async function handleVerifikasiTerima(id: number) {
-  openConfirmModalTerimaLaporan(`/api/v1/tiket/admin/${id}/diterima`, refresh);
+  openModal(ModalTerima, { path: `/api/v1/tiket/admin/${id}/diterima`, refresh });
 }
 
-const columns: ColumnDef<any>[] = [
-  { accessorKey: "noTiket", header: "No Tiket" },
-  { accessorKey: "judul", header: "Judul" },
-  { accessorKey: "isi", header: "Isi Laporan" },
-  { accessorKey: "asalPelapor", header: "Asal Pelapor" },
+const columns: TableColumn<any>[] = [
+  ...baseColumns,
   {
     accessorKey: "aksi",
     header: "Aksi",

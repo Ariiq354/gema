@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import type { ColumnDef } from "@tanstack/vue-table";
+import type { TableColumn } from "@nuxt/ui";
 import { UBadge } from "#components";
 import DataTable from "~/components/Custom/DataTable.vue";
+import { baseColumns } from "../constants";
 
 const props = defineProps<{
   search: string;
@@ -9,7 +10,6 @@ const props = defineProps<{
 }>();
 
 const page = ref(1);
-
 const query = computed(() => ({
   page: page.value,
   status: "selesai",
@@ -21,12 +21,8 @@ const { data, status } = await useLazyFetch("/api/v1/tiket/admin/pengaduan", {
   query,
 });
 
-const columns: ColumnDef<any>[] = [
-  { accessorKey: "noTiket", header: "No Tiket" },
-  { accessorKey: "judul", header: "Judul" },
-  { accessorKey: "isi", header: "Isi Laporan" },
-  { accessorKey: "tanggalKejadian", header: "Tanggal Kejadian" },
-  { accessorKey: "lokasiKejadian", header: "Lokasi Kejadian" },
+const columns: TableColumn<any>[] = [
+  ...baseColumns,
   { accessorKey: "status", header: "Status", cell: ({ row }) =>
     h(
       UBadge,

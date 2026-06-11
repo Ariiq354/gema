@@ -3,26 +3,16 @@ import { format } from "date-fns";
 import { id } from "date-fns/locale";
 import { categories } from "../constant";
 
-defineOptions({
-  tags: ["areacharts", "singleline"],
-});
-
-const props = withDefaults(
-  defineProps<{
-    showTitle?: boolean;
-    data?: {
-      month: string;
-      total: number;
-    }[];
-  }>(),
-  {
-    showTitle: false,
-    data: () => [],
-  },
-);
+const { data = [], showTitle = false } = defineProps<{
+  showTitle?: boolean;
+  data?: {
+    month: string;
+    total: number;
+  }[];
+}>();
 
 const chartData = computed(() =>
-  props.data.map(item => ({
+  data.map(item => ({
     ...item,
     month: format(new Date(`${item.month}-01`), "MMM", {
       locale: id,
@@ -49,16 +39,21 @@ function xFormatter(tick: number): string {
       </h3>
     </div>
 
-    <AreaChart
-      :data="chartData"
-      :height="300"
-      :categories="categories"
-      :y-num-ticks="4"
-      :x-num-ticks="chartData.length"
-      :y-grid-line="true"
-      :legend-position="LegendPosition.TopRight"
-      :hide-legend="false"
-      :x-formatter="xFormatter"
-    />
+    <ClientOnly>
+      <template #fallback>
+        <USkeleton class="h-80 w-full rounded-xl" />
+      </template>
+      <AreaChart
+        :data="chartData"
+        :height="300"
+        :categories="categories"
+        :y-num-ticks="4"
+        :x-num-ticks="chartData.length"
+        :y-grid-line="true"
+        :legend-position="LegendPosition.TopRight"
+        :hide-legend="false"
+        :x-formatter="xFormatter"
+      />
+    </ClientOnly>
   </div>
 </template>

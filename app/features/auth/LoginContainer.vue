@@ -26,7 +26,7 @@ async function onSubmit(event: FormSubmitEvent<LoginSchema>) {
     },
     onError: () => {
       isLoading.value = false;
-      useToastError("Error", "Gagal keluar. Silahkan coba lagi.");
+      useToastError("Error", "Gagal login. Silahkan coba lagi.");
     },
   });
 }
