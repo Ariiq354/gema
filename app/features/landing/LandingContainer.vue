@@ -20,7 +20,7 @@ const activeTab = ref<"pengaduan" | "aspirasi" | "informasi">("pengaduan");
     <div class="container mx-auto px-4 pt-48">
       <div class="text-center mb-20">
         <h1 class="text-5xl font-bold mb-4">
-          Layanan Aspirasi dan Pengaduan Online Rakyat
+          Layanan Aspirasi dan Pengaduan Online Masyarakat
         </h1>
 
         <p class="text-lg font-semibold">

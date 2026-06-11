@@ -17,7 +17,7 @@ const query = computed(() => ({
   idInstansi: props.idInstansi,
 }));
 
-const { data, status } = await useFetch("/api/v1/tiket/admin/aspirasi", {
+const { data, status } = await useLazyFetch("/api/v1/tiket/admin/aspirasi", {
   query,
 });
 
@@ -40,19 +40,12 @@ const columns: ColumnDef<any>[] = [
 </script>
 
 <template>
-  <div v-if="status === 'pending'" class="py-10 flex justify-center">
-    <UIcon
-      name="i-lucide-loader-circle"
-      class="size-8 animate-spin text-primary"
-    />
-  </div>
-
   <DataTable
-    v-else
     v-model:page="page"
     :data="data?.data ?? []"
     :columns="columns"
     :total="data?.total ?? 0"
+    :loading="status === 'pending'"
     enumerate
     pagination
   />

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { ITiketData } from "./components/StatusPenanganan.vue";
+import type { ITiketData } from "./constant.js";
 import { FetchError } from "ofetch";
 import StatusPenanganan from "./components/StatusPenanganan.vue";
 
@@ -42,7 +42,7 @@ async function onSubmit() {
 </script>
 
 <template>
-  <div class="bg-white-pointer-50">
+  <div class="bg-white-pointer-50 min-h-195">
     <div class="container mx-auto pt-40 pb-20">
       <div
         class="bg-white py-10 flex flex-col items-center justify-center gap-8 rounded-xl shadow-sm"
@@ -85,10 +85,12 @@ async function onSubmit() {
         </div>
       </div>
 
-      <div v-if="isLoading" class="mt-8">
-        <USkeleton class="h-40 w-full rounded-xl" />
+      <div v-if="isLoading" class="mt-8 flex justify-center py-12">
+        <UIcon
+          name="i-line-md-loading-twotone-loop"
+          class="text-4xl text-primary animate-spin"
+        />
       </div>
-
       <StatusPenanganan
         v-else-if="tiketData"
         :data="tiketData"

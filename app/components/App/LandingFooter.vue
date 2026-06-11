@@ -3,7 +3,7 @@
     <p class="font-semibold">
       Dikelola Oleh
     </p>
-    <NuxtImg src="/images/logo-kemenag-bogor.png" height="50" />
+    <NuxtImg src="/images/logo-gema.webp" height="50" />
     <p class="text-eucalyptus-900 font-semibold text-xl">
       Kementrian Agama Bogor
     </p>

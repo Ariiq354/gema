@@ -1,46 +1,31 @@
 <script setup lang="ts">
+import type { ITiketData } from "../constant";
 import { computed } from "vue";
-
-interface IStatusHistory {
-  statusSebelumnya: "selesai" | "pending" | "proses" | null;
-  statusBaru: "selesai" | "pending" | "proses";
-  catatan: string | null;
-  tanggal: string | null;
-}
-
-export interface ITiketData {
-  instansi: string | null;
-  id: number;
-  noTiket: string;
-  jenis: "aspirasi" | "pengaduan" | "permintaan_informasi";
-  status: "selesai" | "pending" | "proses";
-  judul: string;
-  isi: string;
-  tanggalDibuat: string;
-  statusHistory: IStatusHistory[];
-}
 
 const props = defineProps<{
   data: ITiketData;
 }>();
 
 const latestHistory = computed(() => {
-  return props.data.statusHistory?.[props.data.statusHistory.length - 1];
-});
-
-function formatDate(date?: string | null) {
-  if (!date) {
-    return "-";
+  if (!props.data.statusHistory?.[0]?.tanggal) {
+    return;
   }
 
-  return new Intl.DateTimeFormat("id-ID", {
-    day: "2-digit",
-    month: "short",
-    year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  }).format(new Date(date));
+  return formatDate(props.data.statusHistory[0].tanggal);
+});
+
+function getStatusDate(status: string) {
+  const history = props.data.statusHistory?.find(
+    item => item.statusBaru === status,
+  );
+
+  return history?.tanggal
+    ? formatDate(history.tanggal)
+    : null;
 }
+
+const verifikasiDate = computed(() => getStatusDate("proses"));
+const diprosesDate = computed(() => getStatusDate("selesai"));
 
 const statusLabel = computed(() => {
   switch (props.data.status) {
@@ -137,17 +122,14 @@ function getStepIcon(step: number) {
         <p class="text-sm">
           Update terakhir:
           <span>
-            {{
-              latestHistory?.tanggal
-                ? formatDate(latestHistory.tanggal)
-                : formatDate(data.tanggalDibuat)
-            }}
+            {{ latestHistory }}
           </span>
         </p>
       </div>
 
       <div
         class="rounded-full bg-golden-grass-500 text-white px-4 py-1 flex items-center gap-2"
+        :class="props.data.status === 'selesai' ? 'bg-primary-700' : 'bg-golden-grass-500'"
       >
         <UIcon
           name="i-mdi-rotate-3d-variant"
@@ -204,7 +186,13 @@ function getStepIcon(step: number) {
             class="text-sm"
             :class="currentStep >= 2 ? '' : 'text-gray-400'"
           >
-            {{ currentStep >= 2 ? "Aktif" : "Menunggu" }}
+            {{
+              currentStep < 2
+                ? "Menunggu"
+                : currentStep === 2
+                  ? "Proses"
+                  : verifikasiDate
+            }}
           </p>
         </div>
       </div>
@@ -233,7 +221,13 @@ function getStepIcon(step: number) {
             class="text-sm"
             :class="currentStep >= 3 ? '' : 'text-gray-400'"
           >
-            {{ currentStep >= 3 ? "Aktif" : "Menunggu" }}
+            {{
+              currentStep < 3
+                ? "Menunggu"
+                : currentStep === 3
+                  ? "Proses"
+                  : diprosesDate
+            }}
           </p>
         </div>
       </div>
@@ -262,7 +256,11 @@ function getStepIcon(step: number) {
             class="text-sm"
             :class="currentStep >= 4 ? '' : 'text-gray-400'"
           >
-            {{ currentStep >= 4 ? "Selesai" : "Menunggu" }}
+            {{
+              currentStep < 4
+                ? "Menunggu"
+                : diprosesDate
+            }}
           </p>
         </div>
       </div>
@@ -271,12 +269,8 @@ function getStepIcon(step: number) {
 
   <div class="w-full flex gap-8">
     <!-- DETAIL LAPORAN -->
-    <div
-      class="w-full bg-white p-10 flex flex-col items-start justify-center gap-8 rounded-xl shadow-sm mt-8"
-    >
-      <div
-        class="w-full flex items-center justify-between pb-4 border-b border-gray-300"
-      >
+    <div class="w-full bg-white p-10 flex flex-col items-start gap-8 rounded-xl shadow-sm mt-8">
+      <div class="w-full flex items-center justify-between pb-4 border-b border-gray-300">
         <div class="flex items-center gap-2">
           <UIcon
             name="i-line-md-file-document"
@@ -287,9 +281,7 @@ function getStepIcon(step: number) {
           </p>
         </div>
 
-        <div
-          class="bg-white-pointer-100 rounded-md px-3 py-1 text-sm text-gray-500 font-semibold"
-        >
+        <div class="bg-white-pointer-100 rounded-md px-3 py-1 text-sm text-gray-500 font-semibold">
           ID: {{ data.noTiket }}
         </div>
       </div>
@@ -319,7 +311,7 @@ function getStepIcon(step: number) {
           </p>
         </div>
 
-        <div class="flex flex-col">
+        <div v-if="data.instansi" class="flex flex-col">
           <p class="text-sm">
             Lokasi
           </p>
@@ -334,9 +326,7 @@ function getStepIcon(step: number) {
         </div>
       </div>
 
-      <div
-        class="w-full bg-white-pointer-100 rounded-xl p-4 flex flex-col gap-2"
-      >
+      <div class="w-full flex-1 bg-white-pointer-100 rounded-xl p-4 flex flex-col gap-2">
         <p class="text-sm">
           Deskripsi Aduan
         </p>
@@ -348,9 +338,7 @@ function getStepIcon(step: number) {
     </div>
 
     <!-- RIWAYAT STATUS -->
-    <div
-      class="w-3/5 bg-white p-10 rounded-xl shadow-sm mt-8 border-l-4 border-eucalyptus-700"
-    >
+    <div class="w-3/5 bg-white p-10 rounded-xl shadow-sm mt-8 border-l-4 border-eucalyptus-700">
       <div class="relative">
         <div class="flex items-center gap-2">
           <UIcon
@@ -374,11 +362,11 @@ function getStepIcon(step: number) {
           />
 
           <p class="text-eucalyptus-700 font-semibold">
-            Sistem GEMA
+            Admin GEMA
           </p>
 
           <p class="mb-2 text-xs">
-            {{ formatDate(item.tanggal) }}
+            {{ formatDate(item.tanggal as string) }}
           </p>
 
           <div

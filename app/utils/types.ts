@@ -1,6 +1,6 @@
 export interface PageSearch {
-  page?: number;
-  search?: string;
+  page: number;
+  search: string;
 }
 
 export type ExtractFetchData<T>

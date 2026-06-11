@@ -57,7 +57,7 @@ async function signOut() {
   <UDashboardSidebar collapsible resizable :ui="{ footer: 'border-t border-default' }" class="bg-white-pointer-50">
     <div class="flex items-center gap-3 px-2 py-3">
       <NuxtImg
-        src="/images/logo-kemenag-bogor.png"
+        src="/images/logo-gema.webp"
         alt="GEMA Logo"
         class="w-16 h-16 object-contain"
       />
