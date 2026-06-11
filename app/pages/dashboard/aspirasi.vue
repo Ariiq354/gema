@@ -4,7 +4,6 @@ import AspirasiContainer from "~/features/aspirasi/AspirasiContainer.vue";
 useHead({
   title: "Gema - Aspirasi",
 });
-
 definePageMeta({
   layout: "dashboard",
 });

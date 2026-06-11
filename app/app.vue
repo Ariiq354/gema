@@ -1,6 +1,6 @@
 <script setup lang="ts">
 useSeoMeta({
-  description: "Gema",
+  description: "Gema - Gerbang Masukan dan Aspirasi",
 });
 
 useHead({

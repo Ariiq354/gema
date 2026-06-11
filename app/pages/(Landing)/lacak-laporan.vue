@@ -4,7 +4,6 @@ import LacakLaporanContainer from "~/features/lacak-laporan/LacakLaporanContaine
 useHead({
   title: "Gema - Lacak Laporan",
 });
-
 definePageMeta({
   layout: "landing",
 });

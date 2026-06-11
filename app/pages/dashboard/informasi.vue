@@ -4,7 +4,6 @@ import PermintaanInformasiContainer from "~/features/permintaan-informasi/Permin
 useHead({
   title: "Gema - Permintaan Informasi",
 });
-
 definePageMeta({
   layout: "dashboard",
 });
