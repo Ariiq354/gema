@@ -4,7 +4,7 @@
       <div class="absolute w-full h-full border-2 border-primary-700 rounded-xl bg-white/10 backdrop-blur-[6px]" />
       <div class="absolute inset-0 flex items-center justify-between px-6">
         <div class="flex items-center gap-4">
-          <NuxtImg src="/images/logo-gema.webp" height="50" />
+          <NuxtImg src="/images/logo-gema.webp" width="50" />
           <p class="text-eucalyptus-700 font-bold text-2xl">
             Gerakan Masukan dan Aspirasi
           </p>
