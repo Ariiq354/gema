@@ -6,7 +6,7 @@
         <div class="flex items-center gap-4">
           <NuxtImg src="/images/logo-gema.webp" width="50" />
           <p class="text-eucalyptus-700 font-bold text-2xl">
-            Gerakan Masukan dan Aspirasi
+            Gerbang Masukan dan Aspirasi
           </p>
         </div>
 
