@@ -1,10 +1,11 @@
 import { z } from "zod";
-import { paginationSearchSchema } from "~~/server/utils/schema";
+import { multipartFiles, paginationSearchSchema } from "~~/server/utils/schema";
 
 const baseSchema = z.object({
   judul: z.string().min(1),
   isi: z.string().min(1),
   idInstansi: z.coerce.number().optional(),
+  files: multipartFiles(),
 });
 
 const masukanSchema = z.object({
@@ -51,25 +52,36 @@ export type CreateTiketResponseSchema = z.infer<typeof createTiketResponseSchema
 
 export type Jenis = "masukan" | "aspirasi";
 
+interface Lampiran {
+  storedName: string;
+  path: string;
+  originalName: string;
+  mimeType: string;
+  extension: string;
+  size: number;
+}
+
 export interface FindAllResultMap {
   masukan: {
     id: number;
     noTiket: string;
     judul: string;
     isi: string;
-    idInstansi: number;
+    idInstansi: number | null;
     status: string;
-    tanggalKejadian: Date;
+    tanggalKejadian: string;
     lokasiKejadian: string;
+    lampiran: Lampiran[];
   };
   aspirasi: {
     id: number;
     noTiket: string;
     judul: string;
     isi: string;
-    idInstansi: number;
+    idInstansi: number | null;
     status: string;
     identitasPelapor: string;
+    lampiran: Lampiran[];
   };
 }
 

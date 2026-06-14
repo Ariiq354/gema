@@ -38,6 +38,18 @@ export const tiketAspirasiTable = pgTable("tiket_aspirasi", {
   ...createdUpdated,
 });
 
+export const tiketLampiranTable = pgTable("tiket_lampiran", {
+  id: integer().primaryKey().generatedByDefaultAsIdentity(),
+  idTiket: integer().references(() => tiketTable.id, { onDelete: "cascade" }).notNull(),
+  storedName: text().notNull(),
+  path: text().notNull(),
+  originalName: text().notNull(),
+  mimeType: text().notNull(),
+  extension: text().notNull(),
+  size: integer().notNull(),
+  ...createdUpdated,
+});
+
 export const tiketResponseTable = pgTable("tiket_response", {
   id: integer().primaryKey().generatedByDefaultAsIdentity(),
   idTiket: integer().references(() => tiketTable.id, { onDelete: "cascade" }).notNull(),

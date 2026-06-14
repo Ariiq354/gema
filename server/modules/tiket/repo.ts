@@ -7,11 +7,12 @@ import type {
   GetTiketRequestSchema,
   Jenis,
 } from "./model";
-import { and, count, desc, eq, ilike, or } from "drizzle-orm";
+import { and, count, desc, eq, ilike, inArray, or } from "drizzle-orm";
 import { db } from "~~/server/database";
 import { instansiTable } from "~~/server/database/schema/instansi";
 import {
   tiketAspirasiTable,
+  tiketLampiranTable,
   tiketMasukanTable,
   tiketResponseTable,
   tiketStatusHistoryTable,
@@ -20,7 +21,7 @@ import {
 import { generateNoTiket } from "~~/server/utils/generate";
 
 export abstract class TiketRepo {
-  static async create(payload: CreateTiketSchema) {
+  static async create(payload: CreateTiketSchema, lampiranKeys?: { key: string; storedName: string }[]) {
     return db.transaction(async (tx) => {
       const noTiket = await generateNoTiket(tx);
 
@@ -64,6 +65,28 @@ export abstract class TiketRepo {
           statusBaru: "pending",
           catatan: "Tiket dibuat",
         });
+
+      if (lampiranKeys && lampiranKeys.length) {
+        if (lampiranKeys.length !== payload.files.length) {
+          throw new Error("Lampiran tidak sesuai dengan jumlah file");
+        };
+
+        await tx.insert(tiketLampiranTable).values(
+          lampiranKeys.map((item, index) => {
+            const file = payload.files[index]!;
+
+            return {
+              idTiket: tiket.id,
+              storedName: item.storedName,
+              path: item.key,
+              originalName: file.filename ?? "",
+              mimeType: file.type ?? "",
+              extension: file.filename ? getFileExtension(file.filename) : "",
+              size: file.data.length,
+            };
+          }),
+        );
+      }
 
       return {
         noTiket,
@@ -178,7 +201,38 @@ export abstract class TiketRepo {
     const total = await db.$count(qb);
     const data = await qb.limit(query.limit).offset(offset);
 
-    return { total, data: data as FindAllResultMap[T][] };
+    const lampiran = await db
+      .select({
+        idTiket: tiketLampiranTable.idTiket,
+        storedName: tiketLampiranTable.storedName,
+        path: tiketLampiranTable.path,
+        originalName: tiketLampiranTable.originalName,
+        mimeType: tiketLampiranTable.mimeType,
+        extension: tiketLampiranTable.extension,
+        size: tiketLampiranTable.size,
+      })
+      .from(tiketLampiranTable)
+      .where(
+        inArray(
+          tiketLampiranTable.idTiket,
+          data.map(item => item.id),
+        ),
+      );
+
+    const lampiranMap = Object.groupBy(
+      lampiran,
+      item => item.idTiket,
+    );
+
+    const result = data.map(item => ({
+      ...item,
+      lampiran: lampiranMap[item.id] ?? [],
+    }));
+
+    return {
+      total,
+      data: result as unknown as FindAllResultMap[T][],
+    };
   }
 
   static async tiketDiterima(idTiket: number, body: CreateTiketDiterimaSchema) {
