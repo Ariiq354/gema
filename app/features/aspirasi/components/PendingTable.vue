@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { TableColumn } from "@nuxt/ui";
-import type { Lampiran } from "~/components/Modal/ModalListLampiran.vue";
 import { h } from "vue";
 import { UButton } from "#components";
 import DataTable from "~/components/Custom/DataTable.vue";
