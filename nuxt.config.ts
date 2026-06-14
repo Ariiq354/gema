@@ -25,7 +25,7 @@ export default defineNuxtConfig({
         "img-src": [
           "'self'",
           "data:",
-          "https://assets.ppg.web.id",
+          "https://asset.gemakemenagkotabogor.id",
         ],
       },
     },
@@ -46,7 +46,7 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     public: {
-      assetUrl: "",
+      assetUrl: "https://asset.gemakemenagkotabogor.id",
     },
   },
 });

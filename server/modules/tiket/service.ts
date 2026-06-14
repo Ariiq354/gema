@@ -6,7 +6,7 @@ export abstract class TiketService {
     const lampiranKeys = await Promise.all(
       payload.files.map(file =>
         uploadFile(
-          "tiket",
+          payload.jenis === "aspirasi" ? "tiket/aspirasi" : "tiket/masukan",
           file.filename!,
           file.data,
           file.type!,

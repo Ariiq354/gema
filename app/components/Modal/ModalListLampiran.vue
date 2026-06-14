@@ -23,7 +23,7 @@ const assetUrl = config.public.assetUrl;
 
 function openFile(path: string) {
   window.open(
-    `${assetUrl}${path}`,
+    `${assetUrl}/${path}`,
     "_blank",
     "noopener,noreferrer",
   );

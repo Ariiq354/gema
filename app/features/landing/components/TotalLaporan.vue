@@ -9,7 +9,7 @@ const { data: count, status } = await useLazyFetch("/api/v1/tiket/count");
         Jumlah Laporan Masuk
       </p>
 
-      <USekleton v-if="status === 'pending'" class="w-32 h-10 rounded-lg bg-gray-300 animate-pulse" />
+      <USkeleton v-if="status === 'pending'" class="w-32 h-10 rounded-lg bg-gray-300 animate-pulse" />
       <p v-else class="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight">
         {{ count }}
       </p>
