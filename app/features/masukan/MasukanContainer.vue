@@ -7,41 +7,41 @@ import SelesaiTable from "./components/SelesaiTable.vue";
 
 const search = ref("");
 const idInstansi = ref<number>();
+const isDesktop = useMediaQuery("(min-width: 768px)");
 
-const items: TabsItem[] = [
+const items = computed<TabsItem[]>(() => [
   {
-    label: "Pending",
+    label: isDesktop.value ? "Pending" : undefined,
     icon: "i-lucide-clock-4",
     slot: "pending",
   },
   {
-    label: "Diterima",
+    label: isDesktop.value ? "Diterima" : undefined,
     icon: "i-lucide-lock",
     slot: "diterima",
   },
   {
-    label: "Selesai",
+    label: isDesktop.value ? "Selesai" : undefined,
     icon: "i-lucide-file-check",
     slot: "selesai",
   },
-];
+]);
 </script>
 
 <template>
-  <section class="w-full bg-[#F8F7FA]">
-    <div class="container py-6 border-b border-gray-200">
-      <h1 class="text-4xl text-primary-700 font-bold">
-        Manajemen Permintaan Informasi
-      </h1>
-    </div>
+  <main class="w-full min-h-screen bg-[#F8F7FA]">
+    <DashboardTopbar
+      title="Manajemen Masukan"
+      description="Kelola masukan masyarakat yang masuk"
+    />
 
     <div class="container my-6">
-      <div class="rounded-lg bg-white shadow-sm flex gap-4 p-5">
+      <div class="rounded-lg bg-white shadow-sm flex md:flex-row flex-col gap-4 p-5">
         <InputSearch v-model="search" placeholder="Search.." />
         <OptionInstansi v-model="idInstansi" />
       </div>
-      <div class="rounded-lg bg-white shadow-sm flex items-center p-5 mt-8">
-        <UTabs :items="items" class="w-full" variant="link">
+      <div class="rounded-lg bg-white shadow-sm flex items-center p-5 md:mt-8 mt-4">
+        <UTabs :items="items" label class="w-full" variant="link">
           <template #pending>
             <PendingTable :search="search" :id-instansi="idInstansi" />
           </template>
@@ -54,5 +54,5 @@ const items: TabsItem[] = [
         </UTabs>
       </div>
     </div>
-  </section>
+  </main>
 </template>

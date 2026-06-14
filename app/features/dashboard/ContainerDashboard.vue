@@ -1,5 +1,7 @@
 <script setup lang="ts">
+import DashboardTopbar from "~/components/App/DashboardTopbar.vue";
 import Chart from "./components/Chart.vue";
+import KPI from "./components/KPI.vue";
 
 const { data, status } = await useFetch("/api/v1/dashboard");
 
@@ -31,33 +33,30 @@ const kpis = computed(() => [
 </script>
 
 <template>
-  <section class="w-full bg-[#F8F7FA]">
-    <div class="container py-6 border-b border-gray-200">
-      <h1 class="text-4xl text-primary-700 font-bold">
-        Dashboard
-      </h1>
-    </div>
+  <main class="w-full bg-[#F8F7FA]">
+    <DashboardTopbar
+      title="Dashboard"
+      description="Ringkasan informasi dan statistik terkait laporan masyarakat."
+    />
 
-    <div class="container my-6">
-      <div class="grid grid-cols-3 gap-4">
-        <KPI
-          v-for="kpi in kpis"
-          :key="kpi.label"
-          :label="kpi.label"
-          :total="kpi.total"
-          :icon="kpi.icon"
-          :icon-color="kpi.iconColor"
-          :bg-icon="kpi.bgIcon"
-          :label-color="kpi.labelColor"
-          :total-color="kpi.totalColor"
-          :bg-card="kpi.bgCard"
-          :pending="status === 'pending'"
-        />
-      </div>
+    <div class="container my-6 grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-8">
+      <KPI
+        v-for="kpi in kpis"
+        :key="kpi.label"
+        :label="kpi.label"
+        :total="kpi.total"
+        :icon="kpi.icon"
+        :icon-color="kpi.iconColor"
+        :bg-icon="kpi.bgIcon"
+        :label-color="kpi.labelColor"
+        :total-color="kpi.totalColor"
+        :bg-card="kpi.bgCard"
+        :pending="status === 'pending'"
+      />
 
-      <div class="mt-10">
-        <Chart show-title :data="data?.graph ?? []" />
-      </div>
+      <UCard class="md:col-span-3">
+        <Chart title="Grafik Total Laporan" :data="data?.graph ?? []" />
+      </UCard>
     </div>
-  </section>
+  </main>
 </template>

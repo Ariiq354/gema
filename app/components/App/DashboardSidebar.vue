@@ -1,33 +1,51 @@
 <script setup lang="ts">
 import type { NavigationMenuItem } from "@nuxt/ui";
 
+const constantStore = useConstantStore();
+const isDesktop = useMediaQuery("(min-width: 768px)");
+
 const items: NavigationMenuItem[][] = [
   [
     {
       label: "Dashboard",
       icon: "i-lucide-layout-dashboard",
       to: "/dashboard",
+      onSelect: () => {
+        if (!isDesktop.value) {
+          constantStore.toggleMobileSidebar();
+        }
+      },
     },
     {
       label: "Daftar Instansi",
       icon: "i-lucide-building-2",
       to: "/dashboard/instansi",
+      onSelect: () => {
+        if (!isDesktop.value) {
+          constantStore.toggleMobileSidebar();
+        }
+      },
     },
     {
-      label: "Pengaduan",
+      label: "Masukan",
       icon: "i-lucide-inbox",
       badge: "4",
-      to: "/dashboard/pengaduan",
+      to: "/dashboard/masukan",
+      onSelect: () => {
+        if (!isDesktop.value) {
+          constantStore.toggleMobileSidebar();
+        }
+      },
     },
     {
       label: "Aspirasi",
       icon: "i-lucide-lightbulb",
       to: "/dashboard/aspirasi",
-    },
-    {
-      label: "Pengajuan Informasi",
-      icon: "i-lucide-book-open",
-      to: "/dashboard/informasi",
+      onSelect: () => {
+        if (!isDesktop.value) {
+          constantStore.toggleMobileSidebar();
+        }
+      },
     },
   ],
 ];
@@ -93,4 +111,38 @@ async function signOut() {
       />
     </template>
   </UDashboardSidebar>
+  <ClientOnly>
+    <USlideover
+      v-if="!isDesktop"
+      v-model:open="constantStore.mobileSidebarShow"
+      side="left"
+      title="Menu"
+    >
+      <template #body>
+        <aside class="overflow-auto">
+          <UNavigationMenu
+            orientation="vertical"
+            :items="items"
+            class="w-full"
+            :ui="{
+              label: 'text-sm uppercase text-primary mb-2',
+              link: 'text-base py-2',
+              separator: 'h-0',
+            }"
+          />
+        </aside>
+      </template>
+      <template #footer>
+        <UButton
+          icon="i-lucide-log-out"
+          label="Logout"
+          color="neutral"
+          variant="ghost"
+          class="w-full"
+          :loading="isLoading"
+          @click="signOut"
+        />
+      </template>
+    </USlideover>
+  </ClientOnly>
 </template>

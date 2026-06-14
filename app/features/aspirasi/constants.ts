@@ -4,5 +4,5 @@ export const baseColumns: TableColumn<any>[] = [
   { accessorKey: "noTiket", header: "No Tiket" },
   { accessorKey: "judul", header: "Judul" },
   { accessorKey: "isi", header: "Isi Laporan" },
-  { accessorKey: "asalPelapor", header: "Identitas Pelapor" },
+  { accessorKey: "identitasPelapor", header: "Identitas Pelapor" },
 ];

@@ -9,7 +9,7 @@ import {
 import { createdUpdated } from "./common";
 import { instansiTable } from "./instansi";
 
-export const jenisEnum = pgEnum("jenis", ["pengaduan", "aspirasi", "permintaan_informasi"]);
+export const jenisEnum = pgEnum("jenis", ["pengaduan", "aspirasi"]);
 export const statusEnum = pgEnum("status", ["pending", "proses", "selesai"]);
 
 export const tiketTable = pgTable("tiket", {
@@ -34,14 +34,7 @@ export const tiketPengaduanTable = pgTable("tiket_pengaduan", {
 export const tiketAspirasiTable = pgTable("tiket_aspirasi", {
   id: integer().primaryKey().generatedByDefaultAsIdentity(),
   idTiket: integer().references(() => tiketTable.id, { onDelete: "cascade" }).notNull().unique(),
-  asalPelapor: text().notNull(),
-  ...createdUpdated,
-});
-
-export const tiketPermintaanInformasiTable = pgTable("tiket_permintaan_informasi", {
-  id: integer().primaryKey().generatedByDefaultAsIdentity(),
-  idTiket: integer().references(() => tiketTable.id, { onDelete: "cascade" }).notNull().unique(),
-  asalPelapor: text().notNull(),
+  identitasPelapor: text().notNull(),
   ...createdUpdated,
 });
 

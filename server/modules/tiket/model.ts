@@ -16,13 +16,7 @@ const pengaduanSchema = z.object({
 
 const aspirasiSchema = z.object({
   jenis: z.literal("aspirasi"),
-  asalPelapor: z.string().min(1),
-  ...baseSchema.shape,
-});
-
-const permintaanInformasiSchema = z.object({
-  jenis: z.literal("permintaan_informasi"),
-  asalPelapor: z.string().min(1),
+  identitasPelapor: z.string().min(1),
   ...baseSchema.shape,
 });
 
@@ -31,7 +25,6 @@ export const createTiketSchema = z.discriminatedUnion(
   [
     pengaduanSchema,
     aspirasiSchema,
-    permintaanInformasiSchema,
   ],
 );
 
@@ -56,7 +49,7 @@ export const createTiketResponseSchema = z.object({
 
 export type CreateTiketResponseSchema = z.infer<typeof createTiketResponseSchema>;
 
-export type Jenis = "pengaduan" | "aspirasi" | "permintaan_informasi";
+export type Jenis = "pengaduan" | "aspirasi";
 
 export interface FindAllResultMap {
   pengaduan: {
@@ -76,16 +69,7 @@ export interface FindAllResultMap {
     isi: string;
     idInstansi: number;
     status: string;
-    asalPelapor: string;
-  };
-  permintaan_informasi: {
-    id: number;
-    noTiket: string;
-    judul: string;
-    isi: string;
-    idInstansi: number;
-    status: string;
-    asalPelapor: string;
+    identitasPelapor: string;
   };
 }
 

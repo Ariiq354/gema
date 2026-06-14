@@ -3,16 +3,20 @@ import { format } from "date-fns";
 import { id } from "date-fns/locale";
 import { categories } from "../constant";
 
-const { data = [], showTitle = false } = defineProps<{
-  showTitle?: boolean;
-  data?: {
-    month: string;
-    total: number;
-  }[];
-}>();
+interface AreaChartData {
+  month: string;
+  total: number;
+}
+
+interface AreaChartProps {
+  title: string;
+  data: AreaChartData[];
+}
+
+const props = defineProps<AreaChartProps>();
 
 const chartData = computed(() =>
-  data.map(item => ({
+  props.data.map(item => ({
     ...item,
     month: format(new Date(`${item.month}-01`), "MMM", {
       locale: id,
@@ -26,19 +30,10 @@ function xFormatter(tick: number): string {
 </script>
 
 <template>
-  <div
-    class="mx-auto space-y-6 rounded-lg bg-white shadow-sm px-10"
-    :class="showTitle ? 'p-6' : ''"
-  >
-    <div
-      v-if="showTitle"
-      class="flex items-center justify-between"
-    >
-      <h3 class="text-xl font-semibold">
-        Grafik Total Laporan
-      </h3>
-    </div>
-
+  <div class="flex flex-col gap-4">
+    <p class="text-xl font-bold text-center">
+      {{ title }}
+    </p>
     <ClientOnly>
       <template #fallback>
         <USkeleton class="h-80 w-full rounded-xl" />

@@ -13,7 +13,6 @@ import { instansiTable } from "~~/server/database/schema/instansi";
 import {
   tiketAspirasiTable,
   tiketPengaduanTable,
-  tiketPermintaanInformasiTable,
   tiketResponseTable,
   tiketStatusHistoryTable,
   tiketTable,
@@ -53,14 +52,7 @@ export abstract class TiketRepo {
         case "aspirasi":
           await tx.insert(tiketAspirasiTable).values({
             idTiket: tiket.id,
-            asalPelapor: payload.asalPelapor,
-          });
-          break;
-
-        case "permintaan_informasi":
-          await tx.insert(tiketPermintaanInformasiTable).values({
-            idTiket: tiket.id,
-            asalPelapor: payload.asalPelapor,
+            identitasPelapor: payload.identitasPelapor,
           });
           break;
       }
@@ -152,25 +144,11 @@ export abstract class TiketRepo {
           isi: tiketTable.isi,
           idInstansi: tiketTable.idInstansi,
           status: tiketTable.status,
-          asalPelapor: tiketAspirasiTable.asalPelapor,
+          identitasPelapor: tiketAspirasiTable.identitasPelapor,
         })
           .from(tiketAspirasiTable)
           .innerJoin(tiketTable, eq(tiketAspirasiTable.idTiket, tiketTable.id))
           .orderBy(desc(tiketAspirasiTable.id));
-        break;
-      case "permintaan_informasi":
-        qb = db.select({
-          id: tiketTable.id,
-          noTiket: tiketTable.noTiket,
-          judul: tiketTable.judul,
-          isi: tiketTable.isi,
-          idInstansi: tiketTable.idInstansi,
-          status: tiketTable.status,
-          asalPelapor: tiketPermintaanInformasiTable.asalPelapor,
-        })
-          .from(tiketPermintaanInformasiTable)
-          .innerJoin(tiketTable, eq(tiketPermintaanInformasiTable.idTiket, tiketTable.id))
-          .orderBy(desc(tiketPermintaanInformasiTable.id));
         break;
     }
 

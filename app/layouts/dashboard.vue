@@ -1,6 +1,6 @@
 <template>
-  <UDashboardGroup>
+  <section class="flex">
     <DashboardSidebar />
     <slot />
-  </UDashboardGroup>
+  </section>
 </template>

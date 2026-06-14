@@ -30,10 +30,6 @@ export abstract class TiketService {
     return await TiketRepo.findAll(query, "aspirasi");
   }
 
-  static async findPermintaanInformasi(query: GetTiketRequestSchema) {
-    return await TiketRepo.findAll(query, "permintaan_informasi");
-  }
-
   static async tiketDiterima(idTiket: number, body: CreateTiketDiterimaSchema) {
     return await TiketRepo.tiketDiterima(idTiket, body);
   }
