@@ -43,4 +43,10 @@ export default defineNuxtConfig({
       standalone: false,
     },
   },
+
+  runtimeConfig: {
+    public: {
+      assetUrl: "",
+    },
+  },
 });

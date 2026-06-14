@@ -3,6 +3,7 @@ import type { TableColumn } from "@nuxt/ui";
 import { h } from "vue";
 import { UButton } from "#components";
 import DataTable from "~/components/Custom/DataTable.vue";
+import ModalListLampiran from "~/components/Modal/ModalListLampiran.vue";
 import ModalProses from "~/components/Modal/ModalProses.vue";
 import { baseColumns } from "../constants";
 
@@ -14,7 +15,7 @@ const props = defineProps<{
 const page = ref(1);
 const query = computed(() => ({
   page: page.value,
-  status: "pending",
+  status: "proses",
   search: props.search,
   idInstansi: props.idInstansi,
 }));
@@ -29,6 +30,24 @@ async function handleVerifikasiTerima(id: number) {
 
 const columns: TableColumn<any>[] = [
   ...baseColumns,
+  {
+    accessorKey: "lampiran",
+    header: "Lampiran",
+    cell: ({ row }) => {
+      const lampiran = row.original.lampiran ?? [];
+      return h(
+        UButton,
+        {
+          size: "sm",
+          variant: "outline",
+          class: "cursor-pointer",
+          disabled: lampiran.length === 0,
+          onClick: () => openModal(ModalListLampiran, { lampiran }),
+        },
+        () => lampiran.length > 0 ? `${lampiran.length} File` : "Tidak ada",
+      );
+    },
+  },
   {
     accessorKey: "aksi",
     header: "Aksi",

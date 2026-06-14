@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import type { TableColumn } from "@nuxt/ui";
-import { UBadge } from "#components";
+import { UBadge, UButton } from "#components";
 import DataTable from "~/components/Custom/DataTable.vue";
+import ModalListLampiran from "~/components/Modal/ModalListLampiran.vue";
 import { baseColumns } from "../constants";
 
 const props = defineProps<{
@@ -23,6 +24,24 @@ const { data, status } = await useLazyFetch("/api/v1/tiket/admin/masukan", {
 
 const columns: TableColumn<any>[] = [
   ...baseColumns,
+  {
+    accessorKey: "lampiran",
+    header: "Lampiran",
+    cell: ({ row }) => {
+      const lampiran = row.original.lampiran ?? [];
+      return h(
+        UButton,
+        {
+          size: "sm",
+          variant: "outline",
+          class: "cursor-pointer",
+          disabled: lampiran.length === 0,
+          onClick: () => openModal(ModalListLampiran, { lampiran }),
+        },
+        () => lampiran.length > 0 ? `${lampiran.length} File` : "Tidak ada",
+      );
+    },
+  },
   { accessorKey: "status", header: "Status", cell: ({ row }) =>
     h(
       UBadge,
@@ -31,7 +50,7 @@ const columns: TableColumn<any>[] = [
         color: "success",
         variant: "subtle",
       },
-      () => row.original.status,
+      () => (row.original.status).toUpperCase(),
     ) },
 ];
 </script>

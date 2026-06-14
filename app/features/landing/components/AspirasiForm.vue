@@ -11,7 +11,7 @@ type AspirasiFormSchema = Extract<
   { jenis: "aspirasi" }
 >;
 
-const state = reactive({ ...initialFormDataAspirasi });
+const state = ref(initialFormDataAspirasi);
 
 const { data, isLoading, execute } = useSubmit();
 
@@ -25,8 +25,10 @@ async function onSubmit(event: FormSubmitEvent<AspirasiFormSchema>) {
   bodyFormData.append("isi", formDataPayload.isi);
   bodyFormData.append("identitasPelapor", formDataPayload.identitasPelapor);
 
-  if (formDataPayload.files) {
-    bodyFormData.append("files", formDataPayload.files);
+  if (formDataPayload.files?.length) {
+    for (const file of formDataPayload.files) {
+      bodyFormData.append("files", file);
+    }
   }
 
   await execute({
@@ -70,6 +72,13 @@ async function onSubmit(event: FormSubmitEvent<AspirasiFormSchema>) {
         />
       </UFormField>
 
+      <UFormField
+        label="Instansi Tujuan"
+        name="idInstansi"
+      >
+        <OptionInstansi v-model="state.idInstansi" />
+      </UFormField>
+
       <UFormField label="Identitas Pelapor" name="identitasPelapor">
         <UInput
           v-model="state.identitasPelapor"
@@ -81,47 +90,54 @@ async function onSubmit(event: FormSubmitEvent<AspirasiFormSchema>) {
       <UFileUpload
         v-slot="{ open }"
         v-model="state.files"
+        multiple
         :disabled="isLoading"
       >
         <UButton class="w-full sm:w-44 border border-eucalyptus-700 text-eucalyptus-700 bg-white hover:bg-eucalyptus-700 hover:text-white flex items-center justify-center sm:justify-start gap-2 cursor-pointer" @click="open()">
           <UIcon name="i-lucide-link-2" class="-rotate-45" />
           <p>Upload Lampiran</p>
         </UButton>
-        <div v-if="state.files">
-          <p v-if="state.files.size > MAX_FILE_SIZE" class="text-error text-sm mt-2">
-            Ukuran file tidak boleh lebih dari {{ (MAX_FILE_SIZE / 1024) / 1024 }}MB
-          </p>
+
+        <div v-if="state.files?.length" class="mt-4 space-y-2">
           <div
-            v-else
-            class="mt-4 border border-dashed border-gray-300 rounded-lg p-4 flex items-center justify-between"
+            v-for="(file, index) in state.files"
+            :key="index"
+            class="border border-dashed border-gray-300 rounded-lg p-4 flex items-center justify-between"
           >
-            <div class="flex items-start gap-3">
-              <UIcon
-                name="i-lucide-file-text"
-                class="size-6 text-gray-500 mt-1"
-              />
-
-              <div>
-                <p class="text-sm font-medium">
-                  Nama File : {{ state.files.name }}
-                </p>
-
-                <p class="text-xs text-gray-500">
-                  Ukuran File :
-                  {{ (state.files.size / 1024).toFixed(2) }} KB
-                </p>
+            <template v-if="file.size > MAX_FILE_SIZE">
+              <div class="flex items-start gap-3">
+                <UIcon name="i-lucide-file-warning" class="size-6 text-error mt-1" />
+                <div>
+                  <p class="text-sm font-medium">
+                    {{ file.name }}
+                  </p>
+                  <p class="text-error text-xs mt-0.5">
+                    Ukuran file tidak boleh lebih dari 10MB
+                  </p>
+                </div>
               </div>
-            </div>
+            </template>
+            <template v-else>
+              <div class="flex items-start gap-3">
+                <UIcon name="i-lucide-file-text" class="size-6 text-gray-500 mt-1" />
+                <div>
+                  <p class="text-sm font-medium">
+                    Nama File: {{ file.name }}
+                  </p>
+                  <p class="text-xs text-gray-500">
+                    Ukuran File: {{ (file.size / 1024).toFixed(2) }} KB
+                  </p>
+                </div>
+              </div>
+            </template>
 
+            <!-- tombol X selalu tampil di luar kondisi -->
             <button
               type="button"
-              class="cursor-pointer"
-              @click="state.files = undefined"
+              class="cursor-pointer ml-3 shrink-0"
+              @click="state.files = state.files?.filter((_, i) => i !== index)"
             >
-              <UIcon
-                name="i-lucide-x"
-                class="size-5 text-gray-400 hover:text-gray-600"
-              />
+              <UIcon name="i-lucide-x" class="size-5 text-gray-400 hover:text-gray-600" />
             </button>
           </div>
         </div>
