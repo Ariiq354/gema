@@ -56,5 +56,11 @@ function setTab(tab: string) {
         </div>
       </button>
     </div>
+    <p v-if="modelValue === 'masukan'" class="text-muted text-sm text-center mt-2">
+      Masukan adalah saran, usulan, atau pendapat yang disampaikan masyarakat untuk membantu meningkatkan kualitas layanan, program, maupun kinerja Kementerian Agama Kota Bogor agar menjadi lebih baik.
+    </p>
+    <p v-else class="text-muted text-sm text-center mt-2">
+      Aspirasi adalah harapan, kebutuhan, atau keinginan masyarakat yang disampaikan kepada Kementerian Agama Kota Bogor sebagai bahan pertimbangan dalam penyusunan kebijakan, program, maupun kegiatan pelayanan kepada masyarakat.
+    </p>
   </div>
 </template>
