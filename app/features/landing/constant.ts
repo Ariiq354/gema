@@ -1,20 +1,24 @@
 import { z } from "zod";
 
+export const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+
 export const baseSchema = z.object({
   judul: z.string().min(1, "Judul laporan wajib diisi"),
   isi: z.string().min(1, "Isi laporan wajib diisi"),
   idInstansi: z.number().optional(),
-  // files: z.optional(
-  //   z
-  //     .file()
-  //     .max(5_000_000)
-  //     .mime([
-  //       "application/pdf",
-  //       "application/msword",
-  //       "image/jpeg",
-  //       "image/png",
-  //     ]),
-  // ),
+  files: z.optional(
+    z
+      .file()
+      .max(10_000_000)
+      .mime([
+        "application/pdf",
+        "application/msword",
+        "image/jpeg",
+        "image/png",
+      ]).refine(file => file.size <= MAX_FILE_SIZE, {
+        message: `Ukuran file tidak boleh lebih dari ${MAX_FILE_SIZE}MB`,
+      }),
+  ),
 });
 
 export const pengaduanSchema = z.object({
@@ -26,13 +30,13 @@ export const pengaduanSchema = z.object({
 
 export const aspirasiSchema = z.object({
   jenis: z.literal("aspirasi"),
-  asalPelapor: z.string().min(1, "Asal Pelapor wajib diisi"),
+  asalPelapor: z.string().min(1, "Identitas Pelapor wajib diisi"),
   ...baseSchema.shape,
 });
 
 export const permintaanInformasiSchema = z.object({
   jenis: z.literal("permintaan_informasi"),
-  asalPelapor: z.string().min(1, "Asal Pelapor wajib diisi"),
+  asalPelapor: z.string().min(1, "Identitas Pelapor wajib diisi"),
   ...baseSchema.shape,
 });
 
@@ -51,7 +55,7 @@ export const initialFormDataPengaduan: z.infer<typeof pengaduanSchema> = {
   tanggalKejadian: "",
   lokasiKejadian: "",
   idInstansi: undefined,
-  // files: undefined,
+  files: undefined,
 };
 
 export const initialFormDataAspirasi: z.infer<typeof aspirasiSchema> = {
@@ -59,7 +63,7 @@ export const initialFormDataAspirasi: z.infer<typeof aspirasiSchema> = {
   judul: "",
   isi: "",
   asalPelapor: "",
-  // files: undefined,
+  files: undefined,
 };
 
 export const initialFormDataPermintaanInformasi: z.infer<
@@ -69,7 +73,7 @@ export const initialFormDataPermintaanInformasi: z.infer<
   judul: "",
   isi: "",
   asalPelapor: "",
-  // files: undefined,
+  files: undefined,
 };
 
 export const initialFormDataByJenis = {
@@ -77,3 +81,18 @@ export const initialFormDataByJenis = {
   aspirasi: initialFormDataAspirasi,
   permintaan_informasi: initialFormDataPermintaanInformasi,
 } as const;
+
+export const TABS = [
+  {
+    key: "pengaduan",
+    label: "MASUKAN",
+  },
+  {
+    key: "aspirasi",
+    label: "ASPIRASI",
+  },
+  // {
+  //   key: "informasi",
+  //   label: "PERMINTAAN INFORMASI",
+  // },
+];

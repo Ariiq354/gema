@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { ITiketData } from "./constant.js";
 import { FetchError } from "ofetch";
+import { ref } from "vue";
 import StatusPenanganan from "./components/StatusPenanganan.vue";
 
 const noTiket = ref("");
@@ -42,35 +43,37 @@ async function onSubmit() {
 </script>
 
 <template>
-  <div class="bg-white-pointer-50 min-h-195">
-    <div class="container mx-auto pt-40 pb-20">
+  <div class="bg-white-pointer-50 min-h-160 md:min-h-190 px-4">
+    <div class="md:container mx-auto pt-28 md:pt-40 pb-20 max-w-4xl">
       <div
-        class="bg-white py-10 flex flex-col items-center justify-center gap-8 rounded-xl shadow-sm"
+        class="bg-white py-8 md:py-10 px-4 sm:px-6 md:px-8 flex flex-col items-center justify-center gap-6 md:gap-8 rounded-xl shadow-sm border border-gray-100"
       >
-        <p class="text-4xl font-bold text-primary">
+        <p class="text-2xl sm:text-3xl md:text-4xl font-semibold md:font-bold text-primary text-center leading-tight">
           Pantau Status Laporan Anda
         </p>
 
-        <p class="w-175 text-wrap text-center">
+        <p class="max-w-xl text-center text-sm md:text-base text-gray-600">
           Masukkan Nomor Tiket / Tracking ID laporan yang telah Anda kirimkan
           untuk melihat perkembangan penanganan secara real-time.
         </p>
 
-        <div class="flex gap-2">
+        <div class="flex flex-col sm:flex-row gap-3 w-full max-w-md justify-center">
           <UInput
             v-model="noTiket"
             type="text"
             placeholder="GEMA-XXXX-XXXX"
+            size="lg"
             :ui="{
               base: 'bg-eucalyptus-50',
             }"
-            class="focus:ring-white-pointer-200 w-96"
+            class="focus:ring-white-pointer-200 w-full"
             @keyup.enter="onSubmit"
           />
 
           <UButton
             :loading="isLoading"
-            class="flex items-center justify-center gap-2 cursor-pointer px-4 py-1"
+            size="lg"
+            class="flex items-center justify-center gap-2 cursor-pointer px-6 py-2 w-full sm:w-auto shrink-0"
             @click="onSubmit"
           >
             <UIcon
@@ -78,9 +81,9 @@ async function onSubmit() {
               name="i-lucide-search"
               class="text-base"
             />
-            <p class="text-base">
+            <span class="text-base font-semibold">
               Lacak
-            </p>
+            </span>
           </UButton>
         </div>
       </div>
@@ -94,6 +97,7 @@ async function onSubmit() {
       <StatusPenanganan
         v-else-if="tiketData"
         :data="tiketData"
+        class="mt-8"
       />
     </div>
   </div>

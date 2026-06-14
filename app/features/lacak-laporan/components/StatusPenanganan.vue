@@ -111,80 +111,81 @@ function getStepIcon(step: number) {
 <template>
   <!-- STATUS PENANGANAN -->
   <div
-    class="bg-white p-10 flex flex-col items-center justify-center gap-8 rounded-xl shadow-sm mt-8"
+    class="bg-white p-5 md:p-10 flex flex-col items-center justify-center gap-6 md:gap-8 rounded-xl shadow-sm mt-6 md:mt-8"
   >
-    <div class="w-full flex items-start justify-between">
-      <div class="flex flex-col gap-2">
-        <p class="text-xl font-semibold">
+    <div class="w-full flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      <div class="flex flex-col gap-1 md:gap-2">
+        <p class="text-lg md:text-xl font-semibold">
           Status Penanganan
         </p>
 
-        <p class="text-sm">
+        <p class="text-xs md:text-sm text-gray-500">
           Update terakhir:
-          <span>
+          <span class="font-medium text-black">
             {{ latestHistory }}
           </span>
         </p>
       </div>
 
       <div
-        class="rounded-full bg-golden-grass-500 text-white px-4 py-1 flex items-center gap-2"
+        class="rounded-full text-white px-4 py-1.5 flex items-center gap-2 text-xs md:text-sm self-start sm:self-auto"
         :class="props.data.status === 'selesai' ? 'bg-primary-700' : 'bg-golden-grass-500'"
       >
         <UIcon
           name="i-mdi-rotate-3d-variant"
-          class="rotate-90"
+          class="rotate-90 text-base"
         />
-        <p>{{ statusLabel }}</p>
+        <p class="font-medium">
+          {{ statusLabel }}
+        </p>
       </div>
     </div>
 
-    <div class="w-full flex justify-evenly">
+    <div class="w-full flex flex-col md:flex-row justify-between gap-6 md:gap-4 relative">
       <!-- DIKIRIM -->
-      <div class="flex flex-col items-center justify-center gap-3">
+      <div class="flex flex-row md:flex-col items-center md:justify-center gap-4 md:gap-3 w-full md:w-1/4">
         <div
-          class="flex items-center justify-center rounded-full bg-eucalyptus-700 text-white w-12 h-12"
+          class="flex items-center justify-center rounded-full bg-eucalyptus-700 text-white w-10 h-10 md:w-12 md:h-12 shrink-0 z-10"
         >
           <UIcon
             name="i-material-symbols-check-rounded"
-            class="text-2xl"
+            class="text-xl md:text-2xl"
           />
         </div>
 
-        <div class="flex flex-col items-center justify-center">
-          <p class="font-semibold text-black">
+        <div class="flex flex-col items-start md:items-center text-left md:text-center">
+          <p class="font-semibold text-sm md:text-base text-black">
             Dikirim
           </p>
-
-          <p class="text-sm">
+          <p class="text-xs md:text-sm text-gray-500">
             {{ formatDate(data.tanggalDibuat) }}
           </p>
         </div>
       </div>
 
       <!-- DIVERIFIKASI -->
-      <div class="flex flex-col items-center justify-center gap-3">
+      <div class="flex flex-row md:flex-col items-center md:justify-center gap-4 md:gap-3 w-full md:w-1/4">
         <div
-          class="flex items-center justify-center rounded-full w-12 h-12"
+          class="flex items-center justify-center rounded-full w-10 h-10 md:w-12 md:h-12 shrink-0 z-10"
           :class="getStepClass(2)"
         >
           <UIcon
             :name="getStepIcon(2)"
-            class="text-2xl"
+            class="text-xl md:text-2xl"
           />
         </div>
 
-        <div class="flex flex-col items-center justify-center">
+        <div class="flex flex-col items-start md:items-center text-left md:text-center">
           <p
-            class="font-semibold"
+            class="font-semibold text-sm md:text-base"
             :class="getStepTextClass(2)"
           >
             Diverifikasi
           </p>
 
           <p
-            class="text-sm"
-            :class="currentStep >= 2 ? '' : 'text-gray-400'"
+            class="text-xs md:text-sm"
+            :class="currentStep >= 2 ? 'text-gray-500' : 'text-gray-400'"
           >
             {{
               currentStep < 2
@@ -198,28 +199,28 @@ function getStepIcon(step: number) {
       </div>
 
       <!-- DIPROSES -->
-      <div class="flex flex-col items-center justify-center gap-3">
+      <div class="flex flex-row md:flex-col items-center md:justify-center gap-4 md:gap-3 w-full md:w-1/4">
         <div
-          class="flex items-center justify-center rounded-full w-12 h-12"
+          class="flex items-center justify-center rounded-full w-10 h-10 md:w-12 md:h-12 shrink-0 z-10"
           :class="getStepClass(3)"
         >
           <UIcon
             :name="getStepIcon(3)"
-            class="text-2xl"
+            class="text-xl md:text-2xl"
           />
         </div>
 
-        <div class="flex flex-col items-center justify-center">
+        <div class="flex flex-col items-start md:items-center text-left md:text-center">
           <p
-            class="font-semibold"
+            class="font-semibold text-sm md:text-base"
             :class="getStepTextClass(3)"
           >
             Diproses
           </p>
 
           <p
-            class="text-sm"
-            :class="currentStep >= 3 ? '' : 'text-gray-400'"
+            class="text-xs md:text-sm"
+            :class="currentStep >= 3 ? 'text-gray-500' : 'text-gray-400'"
           >
             {{
               currentStep < 3
@@ -233,28 +234,28 @@ function getStepIcon(step: number) {
       </div>
 
       <!-- SELESAI -->
-      <div class="flex flex-col items-center justify-center gap-3">
+      <div class="flex flex-row md:flex-col items-center md:justify-center gap-4 md:gap-3 w-full md:w-1/4">
         <div
-          class="flex items-center justify-center rounded-full w-12 h-12"
+          class="flex items-center justify-center rounded-full w-10 h-10 md:w-12 md:h-12 shrink-0 z-10"
           :class="getStepClass(4)"
         >
           <UIcon
             :name="getStepIcon(4)"
-            class="text-2xl"
+            class="text-xl md:text-2xl"
           />
         </div>
 
-        <div class="flex flex-col items-center justify-center">
+        <div class="flex flex-col items-start md:items-center text-left md:text-center">
           <p
-            class="font-semibold"
+            class="font-semibold text-sm md:text-base"
             :class="getStepTextClass(4)"
           >
             Selesai
           </p>
 
           <p
-            class="text-sm"
-            :class="currentStep >= 4 ? '' : 'text-gray-400'"
+            class="text-xs md:text-sm"
+            :class="currentStep >= 4 ? 'text-gray-500' : 'text-gray-400'"
           >
             {{
               currentStep < 4
@@ -267,116 +268,113 @@ function getStepIcon(step: number) {
     </div>
   </div>
 
-  <div class="w-full flex gap-8">
+  <!-- CONTAINER DETAIL & RIWAYAT -->
+  <div class="w-full flex flex-col lg:flex-row gap-6 md:gap-8">
     <!-- DETAIL LAPORAN -->
-    <div class="w-full bg-white p-10 flex flex-col items-start gap-8 rounded-xl shadow-sm mt-8">
-      <div class="w-full flex items-center justify-between pb-4 border-b border-gray-300">
+    <div class="w-full lg:w-3/5 bg-white p-5 md:p-10 flex flex-col items-start gap-6 md:gap-8 rounded-xl shadow-sm mt-6 md:mt-8">
+      <div class="w-full flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-gray-300 gap-3">
         <div class="flex items-center gap-2">
           <UIcon
             name="i-line-md-file-document"
-            class="text-eucalyptus-700 text-2xl"
+            class="text-eucalyptus-700 text-xl md:text-2xl"
           />
-          <p class="text-xl font-semibold">
+          <p class="text-lg md:text-xl font-semibold">
             Detail Laporan
           </p>
         </div>
 
-        <div class="bg-white-pointer-100 rounded-md px-3 py-1 text-sm text-gray-500 font-semibold">
+        <div class="bg-white-pointer-100 rounded-md px-3 py-1 text-xs md:text-sm text-gray-500 font-semibold self-start sm:self-auto">
           ID: {{ data.noTiket }}
         </div>
       </div>
 
-      <p class="text-xl text-black font-semibold col-span-2">
+      <p class="text-lg md:text-xl text-black font-semibold">
         {{ data.judul }}
       </p>
 
-      <div class="grid grid-cols-2 gap-6">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6 w-full">
         <div class="flex flex-col">
-          <p class="text-sm">
+          <p class="text-xs md:text-sm text-gray-500">
             Kategori
           </p>
-
-          <p class="text-lg font-medium">
+          <p class="text-base md:text-lg font-medium text-black">
             {{ data.jenis.charAt(0).toUpperCase() + data.jenis.slice(1) }}
           </p>
         </div>
 
         <div class="flex flex-col">
-          <p class="text-sm">
+          <p class="text-xs md:text-sm text-gray-500">
             Tanggal Kejadian
           </p>
-
-          <p class="text-base font-medium">
+          <p class="text-sm md:text-base font-medium text-black">
             {{ formatDate(data.tanggalDibuat) }}
           </p>
         </div>
 
-        <div v-if="data.instansi" class="flex flex-col">
-          <p class="text-sm">
+        <div v-if="data.instansi" class="flex flex-col sm:col-span-2">
+          <p class="text-xs md:text-sm text-gray-500">
             Lokasi
           </p>
-
-          <p class="text-lg font-medium">
+          <p class="text-base md:text-lg font-medium text-black flex items-center gap-1">
             <UIcon
               name="i-material-symbols-location-on-outline"
-              class="text-eucalyptus-700"
+              class="text-eucalyptus-700 shrink-0"
             />
             {{ data.instansi }}
           </p>
         </div>
       </div>
 
-      <div class="w-full flex-1 bg-white-pointer-100 rounded-xl p-4 flex flex-col gap-2">
-        <p class="text-sm">
+      <div class="w-full bg-white-pointer-100 rounded-xl p-4 flex flex-col gap-2">
+        <p class="text-xs md:text-sm text-gray-500">
           Deskripsi Aduan
         </p>
-
-        <p class="text-black text-base">
+        <p class="text-black text-sm md:text-base whitespace-pre-line">
           {{ data.isi }}
         </p>
       </div>
     </div>
 
     <!-- RIWAYAT STATUS -->
-    <div class="w-3/5 bg-white p-10 rounded-xl shadow-sm mt-8 border-l-4 border-eucalyptus-700">
+    <div class="w-full lg:w-2/5 bg-white p-5 md:p-10 rounded-xl shadow-sm mt-6 lg:mt-8 border-l-4 border-eucalyptus-700">
       <div class="relative">
         <div class="flex items-center gap-2">
           <UIcon
             name="i-mdi-comment-multiple-outline"
-            class="text-eucalyptus-700 text-2xl"
+            class="text-eucalyptus-700 text-xl md:text-2xl"
           />
-          <p class="text-xl font-semibold">
+          <p class="text-lg md:text-xl font-semibold">
             Riwayat Status
           </p>
         </div>
       </div>
 
-      <div class="border-l-2 pl-4 border-white-pointer-100 mt-5">
+      <div class="border-l-2 pl-4 border-white-pointer-100 mt-5 ml-2">
         <div
           v-for="(item, index) in data.statusHistory"
           :key="index"
-          class="relative flex flex-col text-sm mb-8"
+          class="relative flex flex-col text-sm mb-6 last:mb-0"
         >
           <div
-            class="absolute -left-6 top-1 rounded-full w-3.5 h-3.5 bg-eucalyptus-700 border-2 border-white"
+            class="absolute -left-5.75 top-1 rounded-full w-3 h-3 bg-eucalyptus-700 border-2 border-white"
           />
 
-          <p class="text-eucalyptus-700 font-semibold">
+          <p class="text-eucalyptus-700 font-semibold text-xs md:text-sm">
             Admin GEMA
           </p>
 
-          <p class="mb-2 text-xs">
+          <p class="mb-2 text-[10px] md:text-xs text-gray-500">
             {{ formatDate(item.tanggal as string) }}
           </p>
 
           <div
-            class="bg-white-pointer-100 rounded-xl py-3 px-4 flex flex-col gap-2"
+            class="bg-white-pointer-100 rounded-xl py-2.5 px-4 flex flex-col gap-1"
           >
-            <p class="font-medium">
+            <p class="font-semibold text-xs md:text-sm text-black">
               Status: {{ item.statusBaru }}
             </p>
 
-            <p class="text-black text-base">
+            <p class="text-gray-700 text-xs md:text-sm">
               {{ item.catatan }}
             </p>
           </div>
@@ -384,7 +382,7 @@ function getStepIcon(step: number) {
 
         <div
           v-if="!data.statusHistory?.length"
-          class="text-gray-400 text-sm"
+          class="text-gray-400 text-xs md:text-sm py-2"
         >
           Belum ada riwayat status.
         </div>

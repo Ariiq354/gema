@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ref } from "vue";
 import AspirasiForm from "./components/AspirasiForm.vue";
 import InformasiForm from "./components/InformasiForm.vue";
 import LaporanTab from "./components/LaporanTab.vue";
@@ -10,42 +11,45 @@ const activeTab = ref<"pengaduan" | "aspirasi" | "informasi">("pengaduan");
 </script>
 
 <template>
-  <section class="relative">
-    <div class="absolute top-0 left-0 w-full -z-10">
+  <section class="relative min-h-screen">
+    <div class="absolute top-0 left-0 w-full h-screen md:h-125 lg:h-auto -z-10 overflow-hidden">
       <NuxtImg
         src="/images/hero-kemenag.webp"
         class="w-full h-full object-cover rotate-180"
       />
     </div>
-    <div class="container mx-auto px-4 pt-48">
-      <div class="text-center mb-20">
-        <h1 class="text-5xl font-bold mb-4">
-          Gerbang Aspirasi dan Pengaduan Online Masyarakat
+
+    <div class="container mx-auto px-4 pt-32 md:pt-48 pb-12">
+      <div class="text-center mb-10 md:mb-20 max-w-4xl mx-auto">
+        <h1 class="text-3xl md:text-5xl font-bold mb-4 leading-tight dark:text-white">
+          Gerbang Masukan dan Aspirasi Online Masyarakat
         </h1>
 
-        <p class="text-lg font-semibold">
-          Sampaikan aspirasi dan pengaduan Anda secara online, lebih cepat dan praktis!
+        <p class="text-base md:text-lg font-semibold text-gray-700 dark:text-gray-300">
+          Sampaikan masukan dan aspirasi Anda secara online, lebih cepat dan praktis!
         </p>
       </div>
 
-      <div class="max-w-5xl mx-auto bg-white rounded-xl p-8 shadow-lg">
-        <h2 class="text-3xl font-bold text-center mb-8">
+      <div class="max-w-5xl mx-auto bg-white dark:bg-gray-900 rounded-xl p-4 sm:p-6 md:p-8 shadow-lg border border-gray-100 dark:border-gray-800">
+        <h2 class="text-xl md:text-3xl font-bold text-center mb-6 md:mb-8 text-gray-900 dark:text-white">
           Sampaikan Laporan Anda
         </h2>
 
-        <LaporanTab v-model="activeTab" />
+        <LaporanTab v-model="activeTab" class="mb-6" />
 
-        <PengaduanForm
-          v-if="activeTab === 'pengaduan'"
-        />
+        <div class="mt-4">
+          <PengaduanForm
+            v-if="activeTab === 'pengaduan'"
+          />
 
-        <AspirasiForm
-          v-else-if="activeTab === 'aspirasi'"
-        />
+          <AspirasiForm
+            v-else-if="activeTab === 'aspirasi'"
+          />
 
-        <InformasiForm
-          v-else
-        />
+          <InformasiForm
+            v-else
+          />
+        </div>
       </div>
     </div>
 
