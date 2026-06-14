@@ -4,6 +4,8 @@ import type { NavigationMenuItem } from "@nuxt/ui";
 const constantStore = useConstantStore();
 const isDesktop = useMediaQuery("(min-width: 768px)");
 
+const { data, status } = await useLazyFetch("/api/v1/tiket/admin/pending");
+
 const items: NavigationMenuItem[][] = [
   [
     {
@@ -29,7 +31,7 @@ const items: NavigationMenuItem[][] = [
     {
       label: "Masukan",
       icon: "i-lucide-inbox",
-      badge: "4",
+      badge: status.value === "pending" ? undefined : data.value?.masukan,
       to: "/dashboard/masukan",
       onSelect: () => {
         if (!isDesktop.value) {
@@ -40,6 +42,7 @@ const items: NavigationMenuItem[][] = [
     {
       label: "Aspirasi",
       icon: "i-lucide-lightbulb",
+      badge: status.value === "pending" ? undefined : data.value?.aspirasi,
       to: "/dashboard/aspirasi",
       onSelect: () => {
         if (!isDesktop.value) {
@@ -72,13 +75,16 @@ async function signOut() {
 </script>
 
 <template>
-  <UDashboardSidebar collapsible resizable :ui="{ footer: 'border-t border-default' }" class="bg-white-pointer-50">
+  <UDashboardSidebar collapsible :ui="{ footer: 'border-t border-default' }" class="bg-white-pointer-50 w-72">
     <div class="flex items-center gap-3 px-2 py-3">
-      <NuxtImg
-        src="/images/logo-gema.webp"
-        alt="GEMA Logo"
-        class="w-16 h-16 object-contain"
-      />
+      <NuxtLink to="/" class="flex items-center gap-3">
+        <NuxtImg
+          src="/images/logo-gema.webp"
+          alt="GEMA Logo"
+          class="w-16 h-16 object-contain"
+        />
+      </NuxtLink>
+
       <div class="leading-tight">
         <h1 class="font-bold text-lg text-primary-800">
           KEMENAG BOGOR

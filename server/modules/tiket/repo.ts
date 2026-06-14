@@ -7,12 +7,12 @@ import type {
   GetTiketRequestSchema,
   Jenis,
 } from "./model";
-import { and, desc, eq, ilike, or } from "drizzle-orm";
+import { and, count, desc, eq, ilike, or } from "drizzle-orm";
 import { db } from "~~/server/database";
 import { instansiTable } from "~~/server/database/schema/instansi";
 import {
   tiketAspirasiTable,
-  tiketPengaduanTable,
+  tiketMasukanTable,
   tiketResponseTable,
   tiketStatusHistoryTable,
   tiketTable,
@@ -41,8 +41,8 @@ export abstract class TiketRepo {
       }
 
       switch (payload.jenis) {
-        case "pengaduan":
-          await tx.insert(tiketPengaduanTable).values({
+        case "masukan":
+          await tx.insert(tiketMasukanTable).values({
             idTiket: tiket.id,
             tanggalKejadian: payload.tanggalKejadian,
             lokasiKejadian: payload.lokasiKejadian,
@@ -120,7 +120,7 @@ export abstract class TiketRepo {
 
     let qb;
     switch (jenis) {
-      case "pengaduan":
+      case "masukan":
         qb = db.select({
           id: tiketTable.id,
           noTiket: tiketTable.noTiket,
@@ -128,12 +128,12 @@ export abstract class TiketRepo {
           isi: tiketTable.isi,
           idInstansi: tiketTable.idInstansi,
           status: tiketTable.status,
-          tanggalKejadian: tiketPengaduanTable.tanggalKejadian,
-          lokasiKejadian: tiketPengaduanTable.lokasiKejadian,
+          tanggalKejadian: tiketMasukanTable.tanggalKejadian,
+          lokasiKejadian: tiketMasukanTable.lokasiKejadian,
         })
-          .from(tiketPengaduanTable)
-          .innerJoin(tiketTable, eq(tiketPengaduanTable.idTiket, tiketTable.id))
-          .orderBy(desc(tiketPengaduanTable.id));
+          .from(tiketMasukanTable)
+          .innerJoin(tiketTable, eq(tiketMasukanTable.idTiket, tiketTable.id))
+          .orderBy(desc(tiketMasukanTable.id));
 
         break;
       case "aspirasi":
@@ -211,5 +211,25 @@ export abstract class TiketRepo {
         dibuatOleh: body.dibuatOleh,
       });
     });
+  }
+
+  static async tiketCount() {
+    return db.$count(tiketTable);
+  }
+
+  static async tiketPendingCount() {
+    const result = await db
+      .select({
+        jenis: tiketTable.jenis,
+        total: count(),
+      })
+      .from(tiketTable)
+      .where(eq(tiketTable.status, "pending"))
+      .groupBy(tiketTable.jenis);
+
+    return {
+      aspirasi: result.find(item => item.jenis === "aspirasi")?.total ?? 0,
+      masukan: result.find(item => item.jenis === "masukan")?.total ?? 0,
+    };
   }
 }

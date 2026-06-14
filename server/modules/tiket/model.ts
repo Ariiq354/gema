@@ -4,11 +4,11 @@ import { paginationSearchSchema } from "~~/server/utils/schema";
 const baseSchema = z.object({
   judul: z.string().min(1),
   isi: z.string().min(1),
-  idInstansi: z.number().optional(),
+  idInstansi: z.coerce.number().optional(),
 });
 
-const pengaduanSchema = z.object({
-  jenis: z.literal("pengaduan"),
+const masukanSchema = z.object({
+  jenis: z.literal("masukan"),
   tanggalKejadian: z.iso.date(),
   lokasiKejadian: z.string().min(1),
   ...baseSchema.shape,
@@ -23,7 +23,7 @@ const aspirasiSchema = z.object({
 export const createTiketSchema = z.discriminatedUnion(
   "jenis",
   [
-    pengaduanSchema,
+    masukanSchema,
     aspirasiSchema,
   ],
 );
@@ -49,10 +49,10 @@ export const createTiketResponseSchema = z.object({
 
 export type CreateTiketResponseSchema = z.infer<typeof createTiketResponseSchema>;
 
-export type Jenis = "pengaduan" | "aspirasi";
+export type Jenis = "masukan" | "aspirasi";
 
 export interface FindAllResultMap {
-  pengaduan: {
+  masukan: {
     id: number;
     noTiket: string;
     judul: string;

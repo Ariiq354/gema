@@ -6,7 +6,7 @@ export default defineEventHandler(async (event) => {
   authGuard(event);
   const payload = await getValidatedQuerySafe(event, getTiketRequestSchema);
 
-  const result = await TiketService.findPengaduan(payload);
+  const result = await TiketService.findMasukan(payload);
 
   return result;
 });

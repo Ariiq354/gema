@@ -9,7 +9,7 @@ export interface ITiketData {
   instansi: string | null;
   id: number;
   noTiket: string;
-  jenis: "aspirasi" | "pengaduan" | "permintaan_informasi";
+  jenis: "aspirasi" | "masukan";
   status: "selesai" | "pending" | "proses";
   judul: string;
   isi: string;

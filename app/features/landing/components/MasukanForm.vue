@@ -3,19 +3,19 @@ import type { FormSubmitEvent } from "@nuxt/ui";
 import type { LaporanFormSchema } from "../constant";
 import OptionInstansi from "~/components/Option/OptionInstansi.vue";
 import { useSubmit } from "~/composables/function";
-import { initialFormDataPengaduan, MAX_FILE_SIZE, pengaduanSchema } from "../constant";
+import { initialFormDataMasukan, masukanSchema, MAX_FILE_SIZE } from "../constant";
 import ModalSuksesTiket from "./ModalSuksesTiket.vue";
 
-type PengaduanFormSchema = Extract<
+type MasukanFormSchema = Extract<
   LaporanFormSchema,
-  { jenis: "pengaduan" }
+  { jenis: "masukan" }
 >;
 
-const state = reactive({ ...initialFormDataPengaduan });
+const state = ref(initialFormDataMasukan);
 
 const { data, isLoading, execute } = useSubmit();
 
-async function onSubmit(event: FormSubmitEvent<PengaduanFormSchema>) {
+async function onSubmit(event: FormSubmitEvent<MasukanFormSchema>) {
   const formDataPayload = event.data;
   isLoading.value = true;
 
@@ -50,7 +50,7 @@ async function onSubmit(event: FormSubmitEvent<PengaduanFormSchema>) {
 <template>
   <div class="space-y-6">
     <UForm
-      :schema="pengaduanSchema"
+      :schema="masukanSchema"
       :state="state"
       class="space-y-6"
       @submit="onSubmit"

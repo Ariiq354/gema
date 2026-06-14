@@ -56,9 +56,5 @@ function setTab(tab: string) {
         </div>
       </button>
     </div>
-
-    <p class="text-center text-sm md:text-base mt-6 text-gray-600 dark:text-gray-400 px-2">
-      Perhatikan Cara Menyampaikan Pengaduan Yang Baik dan Benar
-    </p>
   </div>
 </template>

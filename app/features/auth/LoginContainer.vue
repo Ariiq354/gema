@@ -36,7 +36,9 @@ async function onSubmit(event: FormSubmitEvent<LoginSchema>) {
   <UCard class="w-full max-w-md">
     <div class="space-y-6">
       <div class="flex flex-col items-center text-center">
-        <NuxtImg src="/images/logo-gema.webp" alt="logo GEMA" class="w-40 md:w-50" />
+        <NuxtLink to="/" class="flex items-center gap-3">
+          <NuxtImg src="/images/logo-gema.webp" alt="logo GEMA" class="w-40 md:w-50" />
+        </NuxtLink>
         <div class="text-highlighted text-2xl font-bold mt-6">
           Assalamualaikum
         </div>

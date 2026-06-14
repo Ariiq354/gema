@@ -23,7 +23,7 @@ async function onSubmit(event: FormSubmitEvent<AspirasiFormSchema>) {
   bodyFormData.append("jenis", formDataPayload.jenis);
   bodyFormData.append("judul", formDataPayload.judul);
   bodyFormData.append("isi", formDataPayload.isi);
-  bodyFormData.append("asalPelapor", formDataPayload.asalPelapor);
+  bodyFormData.append("identitasPelapor", formDataPayload.identitasPelapor);
 
   if (formDataPayload.files) {
     bodyFormData.append("files", formDataPayload.files);
@@ -70,9 +70,9 @@ async function onSubmit(event: FormSubmitEvent<AspirasiFormSchema>) {
         />
       </UFormField>
 
-      <UFormField label="Identitas Pelapor" name="asalPelapor">
+      <UFormField label="Identitas Pelapor" name="identitasPelapor">
         <UInput
-          v-model="state.asalPelapor"
+          v-model="state.identitasPelapor"
           placeholder="Masukkan Identitas Pelapor"
           :disabled="isLoading"
         />

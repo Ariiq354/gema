@@ -1,6 +1,6 @@
 <script setup lang="ts">
 const id = defineModel<number | undefined>({ required: true });
-const { data: listInstansi, pending } = await useLazyFetch("/api/v1/instansi/active");
+const { data: listInstansi, status } = await useLazyFetch("/api/v1/instansi/active");
 </script>
 
 <template>
@@ -10,6 +10,6 @@ const { data: listInstansi, pending } = await useLazyFetch("/api/v1/instansi/act
     label-key="nama"
     value-key="id"
     :items="listInstansi"
-    :loading="pending"
+    :loading="status === 'pending'"
   />
 </template>

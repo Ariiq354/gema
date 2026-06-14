@@ -22,8 +22,8 @@ export abstract class TiketService {
     return tiket;
   }
 
-  static async findPengaduan(query: GetTiketRequestSchema) {
-    return await TiketRepo.findAll(query, "pengaduan");
+  static async findMasukan(query: GetTiketRequestSchema) {
+    return await TiketRepo.findAll(query, "masukan");
   }
 
   static async findAspirasi(query: GetTiketRequestSchema) {
@@ -36,5 +36,13 @@ export abstract class TiketService {
 
   static async tiketSelesai(idTiket: number, body: CreateTiketResponseSchema) {
     return await TiketRepo.tiketSelesai(idTiket, body);
+  }
+
+  static async tiketCount() {
+    return await TiketRepo.tiketCount();
+  }
+
+  static async tiketPendingCount() {
+    return await TiketRepo.tiketPendingCount();
   }
 }

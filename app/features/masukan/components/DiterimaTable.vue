@@ -19,7 +19,7 @@ const query = computed(() => ({
   idInstansi: props.idInstansi,
 }));
 
-const { data, status, refresh } = await useLazyFetch("/api/v1/tiket/admin/pengaduan", {
+const { data, status, refresh } = await useLazyFetch("/api/v1/tiket/admin/masukan", {
   query,
 });
 

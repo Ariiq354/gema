@@ -1,13 +1,12 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import AspirasiForm from "./components/AspirasiForm.vue";
-import InformasiForm from "./components/InformasiForm.vue";
 import LaporanTab from "./components/LaporanTab.vue";
-import PengaduanForm from "./components/PengaduanForm.vue";
+import MasukanForm from "./components/MasukanForm.vue";
 import StepProsesPengajuan from "./components/StepProsesPengajuan.vue";
 import TotalLaporan from "./components/TotalLaporan.vue";
 
-const activeTab = ref<"pengaduan" | "aspirasi" | "informasi">("pengaduan");
+const activeTab = ref<"masukan" | "aspirasi" | "informasi">("masukan");
 </script>
 
 <template>
@@ -38,16 +37,12 @@ const activeTab = ref<"pengaduan" | "aspirasi" | "informasi">("pengaduan");
         <LaporanTab v-model="activeTab" class="mb-6" />
 
         <div class="mt-4">
-          <PengaduanForm
-            v-if="activeTab === 'pengaduan'"
+          <MasukanForm
+            v-if="activeTab === 'masukan'"
           />
 
           <AspirasiForm
             v-else-if="activeTab === 'aspirasi'"
-          />
-
-          <InformasiForm
-            v-else
           />
         </div>
       </div>

@@ -9,7 +9,7 @@ import {
 import { createdUpdated } from "./common";
 import { instansiTable } from "./instansi";
 
-export const jenisEnum = pgEnum("jenis", ["pengaduan", "aspirasi"]);
+export const jenisEnum = pgEnum("jenis", ["masukan", "aspirasi"]);
 export const statusEnum = pgEnum("status", ["pending", "proses", "selesai"]);
 
 export const tiketTable = pgTable("tiket", {
@@ -23,7 +23,7 @@ export const tiketTable = pgTable("tiket", {
   ...createdUpdated,
 });
 
-export const tiketPengaduanTable = pgTable("tiket_pengaduan", {
+export const tiketMasukanTable = pgTable("tiket_masukan", {
   id: integer().primaryKey().generatedByDefaultAsIdentity(),
   idTiket: integer().references(() => tiketTable.id, { onDelete: "cascade" }).notNull().unique(),
   tanggalKejadian: date({ mode: "string" }).notNull(),

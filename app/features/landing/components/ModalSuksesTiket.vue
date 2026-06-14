@@ -11,7 +11,7 @@ const emit = defineEmits<{ close: [boolean] }>();
 <template>
   <UModal
     title="PERHATIAN!"
-    description="Pengaduan anda berhasil terkirim, silahkan catat dan simpan kode tiket dibawah ini untuk tracking proses pengaduan."
+    description="Masukan anda berhasil terkirim, silahkan catat dan simpan kode tiket dibawah ini untuk tracking proses masukan."
     :close="{ onClick: () => emit('close', false) }"
   >
     <template #body>

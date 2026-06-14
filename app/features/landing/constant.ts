@@ -21,8 +21,8 @@ export const baseSchema = z.object({
   ),
 });
 
-export const pengaduanSchema = z.object({
-  jenis: z.literal("pengaduan"),
+export const masukanSchema = z.object({
+  jenis: z.literal("masukan"),
   tanggalKejadian: z.iso.date(),
   lokasiKejadian: z.string().min(1, "Lokasi laporan wajib diisi"),
   ...baseSchema.shape,
@@ -30,26 +30,19 @@ export const pengaduanSchema = z.object({
 
 export const aspirasiSchema = z.object({
   jenis: z.literal("aspirasi"),
-  asalPelapor: z.string().min(1, "Identitas Pelapor wajib diisi"),
-  ...baseSchema.shape,
-});
-
-export const permintaanInformasiSchema = z.object({
-  jenis: z.literal("permintaan_informasi"),
-  asalPelapor: z.string().min(1, "Identitas Pelapor wajib diisi"),
+  identitasPelapor: z.string().min(1, "Identitas Pelapor wajib diisi"),
   ...baseSchema.shape,
 });
 
 export const laporanSchema = z.discriminatedUnion("jenis", [
-  pengaduanSchema,
+  masukanSchema,
   aspirasiSchema,
-  permintaanInformasiSchema,
 ]);
 
 export type LaporanFormSchema = z.infer<typeof laporanSchema>;
 
-export const initialFormDataPengaduan: z.infer<typeof pengaduanSchema> = {
-  jenis: "pengaduan",
+export const initialFormDataMasukan: z.infer<typeof masukanSchema> = {
+  jenis: "masukan",
   judul: "",
   isi: "",
   tanggalKejadian: "",
@@ -62,37 +55,22 @@ export const initialFormDataAspirasi: z.infer<typeof aspirasiSchema> = {
   jenis: "aspirasi",
   judul: "",
   isi: "",
-  asalPelapor: "",
-  files: undefined,
-};
-
-export const initialFormDataPermintaanInformasi: z.infer<
-  typeof permintaanInformasiSchema
-> = {
-  jenis: "permintaan_informasi",
-  judul: "",
-  isi: "",
-  asalPelapor: "",
+  identitasPelapor: "",
   files: undefined,
 };
 
 export const initialFormDataByJenis = {
-  pengaduan: initialFormDataPengaduan,
+  masukan: initialFormDataMasukan,
   aspirasi: initialFormDataAspirasi,
-  permintaan_informasi: initialFormDataPermintaanInformasi,
 } as const;
 
 export const TABS = [
   {
-    key: "pengaduan",
+    key: "masukan",
     label: "MASUKAN",
   },
   {
     key: "aspirasi",
     label: "ASPIRASI",
   },
-  // {
-  //   key: "informasi",
-  //   label: "PERMINTAAN INFORMASI",
-  // },
 ];
