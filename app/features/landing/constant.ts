@@ -23,8 +23,7 @@ export const baseSchema = z.object({
 
 export const masukanSchema = z.object({
   jenis: z.literal("masukan"),
-  tanggalKejadian: z.iso.date(),
-  lokasiKejadian: z.string().min(1, "Lokasi laporan wajib diisi"),
+  identitasPelapor: z.string().min(1, "Identitas Pelapor wajib diisi"),
   ...baseSchema.shape,
 });
 
@@ -45,8 +44,7 @@ export const initialFormDataMasukan: z.infer<typeof masukanSchema> = {
   jenis: "masukan",
   judul: "",
   isi: "",
-  tanggalKejadian: "",
-  lokasiKejadian: "",
+  identitasPelapor: "",
   idInstansi: undefined,
   files: [],
 };

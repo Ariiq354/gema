@@ -23,8 +23,7 @@ async function onSubmit(event: FormSubmitEvent<MasukanFormSchema>) {
   bodyFormData.append("jenis", formDataPayload.jenis);
   bodyFormData.append("judul", formDataPayload.judul);
   bodyFormData.append("isi", formDataPayload.isi);
-  bodyFormData.append("tanggalKejadian", formDataPayload.tanggalKejadian);
-  bodyFormData.append("lokasiKejadian", formDataPayload.lokasiKejadian);
+  bodyFormData.append("identitasPelapor", formDataPayload.identitasPelapor);
 
   if (formDataPayload.files?.length) {
     for (const file of formDataPayload.files) {
@@ -73,14 +72,6 @@ async function onSubmit(event: FormSubmitEvent<MasukanFormSchema>) {
         />
       </UFormField>
 
-      <UFormField label="Tanggal Kejadian" name="tanggalKejadian">
-        <UInput
-          v-model="state.tanggalKejadian"
-          type="date"
-          :disabled="isLoading"
-        />
-      </UFormField>
-
       <UFormField
         label="Instansi Tujuan"
         name="idInstansi"
@@ -88,10 +79,10 @@ async function onSubmit(event: FormSubmitEvent<MasukanFormSchema>) {
         <OptionInstansi v-model="state.idInstansi" />
       </UFormField>
 
-      <UFormField label="Lokasi Kejadian" name="lokasiKejadian">
+      <UFormField label="Identitas Pelapor" name="identitasPelapor">
         <UInput
-          v-model="state.lokasiKejadian"
-          placeholder="Masukkan Lokasi Kejadian"
+          v-model="state.identitasPelapor"
+          placeholder="Masukkan Identitas Pelapor"
           :disabled="isLoading"
         />
       </UFormField>

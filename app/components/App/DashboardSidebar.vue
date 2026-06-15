@@ -4,9 +4,11 @@ import type { NavigationMenuItem } from "@nuxt/ui";
 const constantStore = useConstantStore();
 const isDesktop = useMediaQuery("(min-width: 768px)");
 
-const { data, status } = await useLazyFetch("/api/v1/tiket/admin/pending");
+const { data, status } = await useLazyFetch("/api/v1/tiket/admin/pending", {
+  key: "pending-tiket",
+});
 
-const items: NavigationMenuItem[][] = [
+const items = computed<NavigationMenuItem[][]>(() => [
   [
     {
       label: "Dashboard",
@@ -31,7 +33,10 @@ const items: NavigationMenuItem[][] = [
     {
       label: "Masukan",
       icon: "i-lucide-inbox",
-      badge: status.value === "pending" ? undefined : data.value?.masukan,
+      badge:
+        status.value === "pending" || data.value?.masukan === 0
+          ? undefined
+          : data.value?.masukan,
       to: "/dashboard/masukan",
       onSelect: () => {
         if (!isDesktop.value) {
@@ -42,7 +47,10 @@ const items: NavigationMenuItem[][] = [
     {
       label: "Aspirasi",
       icon: "i-lucide-lightbulb",
-      badge: status.value === "pending" ? undefined : data.value?.aspirasi,
+      badge:
+        status.value === "pending" || data.value?.aspirasi === 0
+          ? undefined
+          : data.value?.aspirasi,
       to: "/dashboard/aspirasi",
       onSelect: () => {
         if (!isDesktop.value) {
@@ -51,7 +59,7 @@ const items: NavigationMenuItem[][] = [
       },
     },
   ],
-];
+]);
 
 const isLoading = ref(false);
 async function signOut() {

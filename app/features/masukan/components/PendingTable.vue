@@ -24,8 +24,13 @@ const { data, status, refresh } = await useLazyFetch("/api/v1/tiket/admin/masuka
   query,
 });
 
+async function onSubmit() {
+  await refresh();
+  await refreshNuxtData("pending-tiket");
+}
+
 async function handleVerifikasiTerima(id: number) {
-  openModal(ModalTerima, { path: `/api/v1/tiket/admin/${id}/diterima`, refresh });
+  openModal(ModalTerima, { path: `/api/v1/tiket/admin/${id}/diterima`, refresh: onSubmit });
 }
 
 const columns: TableColumn<any>[] = [

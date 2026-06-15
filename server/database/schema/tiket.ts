@@ -1,5 +1,4 @@
 import {
-  date,
   integer,
   pgEnum,
   pgTable,
@@ -26,8 +25,7 @@ export const tiketTable = pgTable("tiket", {
 export const tiketMasukanTable = pgTable("tiket_masukan", {
   id: integer().primaryKey().generatedByDefaultAsIdentity(),
   idTiket: integer().references(() => tiketTable.id, { onDelete: "cascade" }).notNull().unique(),
-  tanggalKejadian: date({ mode: "string" }).notNull(),
-  lokasiKejadian: text().notNull(),
+  identitasPelapor: text().notNull(),
   ...createdUpdated,
 });
 

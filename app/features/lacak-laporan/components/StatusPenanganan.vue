@@ -304,7 +304,7 @@ function getStepIcon(step: number) {
 
         <div class="flex flex-col">
           <p class="text-xs md:text-sm text-gray-500">
-            Tanggal Kejadian
+            Tanggal Laporan
           </p>
           <p class="text-sm md:text-base font-medium text-black">
             {{ formatDate(data.tanggalDibuat) }}

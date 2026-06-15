@@ -48,7 +48,7 @@ const { data } = defineProps<{
 
       <div class="flex flex-col">
         <p class="text-sm">
-          Tanggal Kejadian
+          Tanggal Laporan
         </p>
 
         <p class="text-base font-medium">

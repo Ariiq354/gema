@@ -10,8 +10,7 @@ const baseSchema = z.object({
 
 const masukanSchema = z.object({
   jenis: z.literal("masukan"),
-  tanggalKejadian: z.iso.date(),
-  lokasiKejadian: z.string().min(1),
+  identitasPelapor: z.string().min(1),
   ...baseSchema.shape,
 });
 
@@ -69,8 +68,7 @@ export interface FindAllResultMap {
     isi: string;
     idInstansi: number | null;
     status: string;
-    tanggalKejadian: string;
-    lokasiKejadian: string;
+    identitasPelapor: string;
     lampiran: Lampiran[];
   };
   aspirasi: {

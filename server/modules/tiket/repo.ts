@@ -45,8 +45,7 @@ export abstract class TiketRepo {
         case "masukan":
           await tx.insert(tiketMasukanTable).values({
             idTiket: tiket.id,
-            tanggalKejadian: payload.tanggalKejadian,
-            lokasiKejadian: payload.lokasiKejadian,
+            identitasPelapor: payload.identitasPelapor,
           });
           break;
 
@@ -151,8 +150,7 @@ export abstract class TiketRepo {
           isi: tiketTable.isi,
           idInstansi: tiketTable.idInstansi,
           status: tiketTable.status,
-          tanggalKejadian: tiketMasukanTable.tanggalKejadian,
-          lokasiKejadian: tiketMasukanTable.lokasiKejadian,
+          identitasPelapor: tiketMasukanTable.identitasPelapor,
         })
           .from(tiketMasukanTable)
           .innerJoin(tiketTable, eq(tiketMasukanTable.idTiket, tiketTable.id))
