@@ -5,6 +5,11 @@ import { ac, admin, user } from "~~/shared/permission";
 import { db } from "../database";
 
 export const auth = betterAuth({
+  trustedOrigins: [
+    "https://gemakemenagkotabogor.id",
+    "https://*.gemakemenagkotabogor.id",
+    "https://gema-two.vercel.app",
+  ],
   database: drizzleAdapter(db, {
     provider: "pg",
   }),
