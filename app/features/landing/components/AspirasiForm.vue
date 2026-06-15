@@ -56,18 +56,18 @@ async function onSubmit(event: FormSubmitEvent<AspirasiFormSchema>) {
       class="space-y-6"
       @submit="onSubmit"
     >
-      <UFormField label="Judul Laporan" name="judul">
+      <UFormField label="Judul Aspirasi" name="judul">
         <UInput
           v-model="state.judul"
-          placeholder="Masukkan Judul Laporan Anda"
+          placeholder="Masukkan Judul Aspirasi Anda"
           :disabled="isLoading"
         />
       </UFormField>
 
-      <UFormField label="Isi Laporan" name="isi">
+      <UFormField label="Isi Aspirasi" name="isi">
         <UTextarea
           v-model="state.isi"
-          placeholder="Masukkan Isi Laporan Anda"
+          placeholder="Masukkan Isi Aspirasi Anda"
           :disabled="isLoading"
         />
       </UFormField>

@@ -36,6 +36,7 @@ const philosophies = [
       "Aliran aspirasi masyarakat yang terus bergerak.",
       "Proses perbaikan layanan yang berkelanjutan.",
       "Melambangkan kualitas pelayanan dan profesionalisme.",
+      "Nilai optimisme menuju Generasi Emas 2045",
     ],
   },
   {

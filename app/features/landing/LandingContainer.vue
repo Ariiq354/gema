@@ -31,7 +31,7 @@ const activeTab = ref<"masukan" | "aspirasi" | "informasi">("masukan");
 
       <div class="max-w-5xl mx-auto bg-white dark:bg-gray-900 rounded-xl p-4 sm:p-6 md:p-8 shadow-lg border border-gray-100 dark:border-gray-800">
         <h2 class="text-xl md:text-3xl font-bold text-center mb-6 md:mb-8 text-gray-900 dark:text-white">
-          Sampaikan Laporan Anda
+          Sampaikan Masukan dan Aspirasi Anda
         </h2>
 
         <LaporanTab v-model="activeTab" class="mb-6" />

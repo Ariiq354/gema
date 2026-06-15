@@ -42,5 +42,10 @@
     "eslint": "^10.5.0",
     "eslint-plugin-format": "^2.0.1",
     "typescript": "^6.0.3"
-  }
+  },
+  "trustedDependencies": [
+    "@parcel/watcher",
+    "maplibre-gl",
+    "unrs-resolver"
+  ]
 }
