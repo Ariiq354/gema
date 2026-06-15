@@ -57,7 +57,7 @@ async function onClick() {
             size="72"
             class="text-primary"
           />
-          <span class="font-semibold text-lg">Verifikasi Terima Laporan?</span>
+          <span class="font-semibold text-lg">Verifikasi Terima Laporan</span>
         </div>
 
         <div>
