@@ -14,7 +14,7 @@ const activeTab = ref<"masukan" | "aspirasi" | "informasi">("masukan");
     <div class="absolute top-0 left-0 w-full h-screen md:h-125 lg:h-auto -z-10 overflow-hidden">
       <NuxtImg
         src="/images/hero-kemenag.webp"
-        class="w-full h-full object-cover rotate-180"
+        class="w-full h-full object-cover rotate-180 hero"
       />
     </div>
 
@@ -52,3 +52,19 @@ const activeTab = ref<"masukan" | "aspirasi" | "informasi">("masukan");
     <TotalLaporan />
   </section>
 </template>
+
+<style scoped>
+.hero {
+  position: relative;
+}
+
+.hero::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 150px;
+  background: linear-gradient(to bottom, transparent, #f5f5f5);
+}
+</style>

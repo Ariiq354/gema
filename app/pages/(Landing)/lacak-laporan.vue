@@ -2,7 +2,7 @@
 import LacakLaporanContainer from "~/features/lacak-laporan/LacakLaporanContainer.vue";
 
 useHead({
-  title: "Gema - Lacak Laporan",
+  title: "Gema - Lacak Masukan",
 });
 definePageMeta({
   layout: "landing",

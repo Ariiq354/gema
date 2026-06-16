@@ -279,7 +279,7 @@ function getStepIcon(step: number) {
             class="text-eucalyptus-700 text-xl md:text-2xl"
           />
           <p class="text-lg md:text-xl font-semibold">
-            Detail Laporan
+            Detail {{ data.jenis === 'masukan' ? 'Masukan' : 'Aspirasi' }}
           </p>
         </div>
 
@@ -304,7 +304,7 @@ function getStepIcon(step: number) {
 
         <div class="flex flex-col">
           <p class="text-xs md:text-sm text-gray-500">
-            Tanggal Laporan
+            Tanggal {{ data.jenis === 'masukan' ? 'Masukan' : 'Aspirasi' }}
           </p>
           <p class="text-sm md:text-base font-medium text-black">
             {{ formatDate(data.tanggalDibuat) }}
@@ -313,7 +313,7 @@ function getStepIcon(step: number) {
 
         <div v-if="data.instansi" class="flex flex-col sm:col-span-2">
           <p class="text-xs md:text-sm text-gray-500">
-            Lokasi
+            Instansi
           </p>
           <p class="text-base md:text-lg font-medium text-black flex items-center gap-1">
             <UIcon
@@ -327,7 +327,7 @@ function getStepIcon(step: number) {
 
       <div class="w-full bg-white-pointer-100 rounded-xl p-4 flex flex-col gap-2">
         <p class="text-xs md:text-sm text-gray-500">
-          Deskripsi Aduan
+          Isi {{ data.jenis === 'masukan' ? 'Masukan' : 'Aspirasi' }}
         </p>
         <p class="text-black text-sm md:text-base whitespace-pre-line">
           {{ data.isi }}

@@ -5,7 +5,7 @@ const isOpen = ref(false);
 
 const menuItems = [
   { label: "Home", to: "/" },
-  { label: "Lacak Laporan", to: "/lacak-laporan" },
+  { label: "Lacak Masukan", to: "/lacak-laporan" },
   { label: "Profil", to: "/profil" },
 ];
 </script>

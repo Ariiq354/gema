@@ -3,8 +3,8 @@ import { z } from "zod";
 export const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
 
 export const baseSchema = z.object({
-  judul: z.string().min(1, "Judul laporan wajib diisi"),
-  isi: z.string().min(1, "Isi laporan wajib diisi"),
+  judul: z.string().min(1, "Judul wajib diisi"),
+  isi: z.string().min(1, "Isi wajib diisi"),
   idInstansi: z.number().optional(),
   files: z
     .array(
@@ -23,13 +23,13 @@ export const baseSchema = z.object({
 
 export const masukanSchema = z.object({
   jenis: z.literal("masukan"),
-  identitasPelapor: z.string().min(1, "Identitas Pelapor wajib diisi"),
+  identitasPelapor: z.string().min(1, "Identitas wajib diisi"),
   ...baseSchema.shape,
 });
 
 export const aspirasiSchema = z.object({
   jenis: z.literal("aspirasi"),
-  identitasPelapor: z.string().min(1, "Identitas Pelapor wajib diisi"),
+  identitasPelapor: z.string().min(1, "Identitas wajib diisi"),
   ...baseSchema.shape,
 });
 

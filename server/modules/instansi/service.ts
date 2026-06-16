@@ -20,9 +20,9 @@ export abstract class InstansiService {
     if (result.length === 0) {
       throw createError({
         statusCode: 404,
+        message: "Instansi tidak ditemukan",
         data: {
           code: "INSTANSI_MISSING",
-          message: "Instansi tidak ditemukan",
         },
       });
     }
@@ -33,9 +33,9 @@ export abstract class InstansiService {
     if (result.length === 0) {
       throw createError({
         statusCode: 404,
+        message: "Instansi tidak ditemukan",
         data: {
           code: "INSTANSI_MISSING",
-          message: "Instansi tidak ditemukan",
         },
       });
     }

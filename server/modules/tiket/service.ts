@@ -32,9 +32,9 @@ export abstract class TiketService {
     if (!tiket) {
       throw createError({
         statusCode: 404,
+        message: "Tiket tidak ditemukan",
         data: {
           code: "TIKET_MISSING",
-          message: "Tiket tidak ditemukan",
         },
       });
     };
