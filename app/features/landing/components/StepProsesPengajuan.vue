@@ -7,25 +7,25 @@ const activeStep = ref(1);
 const items = ref<StepperItem[]>([
   {
     title: "Tulis Masukan & Aspirasi",
-    description: "Laporkan masukan atau aspirasi anda dengan jelas dan lengkap",
+    description: "Kirimkan masukan atau aspirasi anda dengan jelas dan lengkap",
     icon: "i-lucide-square-pen",
     disabled: activeStep.value !== 0,
   },
   {
     title: "Proses Verifikasi",
-    description: "Dalam 3 hari, laporan Anda akan diverifikasi dan diteruskan",
+    description: "Dalam 3 hari, masukan & aspirasi Anda akan diverifikasi dan diteruskan",
     icon: "i-lucide-file-down",
     disabled: activeStep.value !== 1,
   },
   {
     title: "Proses Tindak Lanjut",
-    description: "Instansi akan menindaklanjuti dan membalas laporan Anda",
+    description: "Instansi akan menindaklanjuti dan membalas masukan & aspirasi Anda",
     icon: "i-lucide-file-check-2",
     disabled: activeStep.value !== 2,
   },
   {
     title: "Selesai",
-    description: "Laporan Anda akan terus ditindaklanjuti hingga terselesaikan",
+    description: "Masukan & aspirasi Anda akan terus ditindaklanjuti hingga terselesaikan",
     icon: "i-lucide-check",
     disabled: activeStep.value !== 3,
   },

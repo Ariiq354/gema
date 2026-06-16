@@ -59,7 +59,7 @@ const columns: TableColumn<Lampiran>[] = [
   <UModal
     :close="{ onClick: () => emit('close', false) }"
     :ui="{ body: 'sm:max-w-xl' }"
-    title="List Laporan"
+    title="List Lampiran"
   >
     <template #body>
       <DataTable

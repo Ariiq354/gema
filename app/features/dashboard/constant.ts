@@ -1,3 +1,3 @@
 export const categories = {
-  total: { name: "Total Laporan", color: "#22c55e" },
+  total: { name: "Total Masukan & Aspirasi", color: "#22c55e" },
 };

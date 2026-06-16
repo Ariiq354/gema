@@ -7,7 +7,7 @@ const { data, status } = await useFetch("/api/v1/dashboard");
 
 const kpis = computed(() => [
   {
-    label: "LAPORAN MASUK (HARI INI)",
+    label: "MASUKAN & ASPIRASI (HARI INI)",
     total: data.value?.statCard.tiketMasukHariIni,
     icon: "i-mingcute-inbox-fill",
     iconColor: "text-white-pointer-500",
@@ -36,7 +36,7 @@ const kpis = computed(() => [
   <main class="w-full bg-[#F8F7FA]">
     <DashboardTopbar
       title="Dashboard"
-      description="Ringkasan informasi dan statistik terkait laporan masyarakat."
+      description="Ringkasan informasi dan statistik terkait masukan & aspirasi masyarakat."
     />
 
     <div class="container my-6 grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-8">
@@ -55,7 +55,7 @@ const kpis = computed(() => [
       />
 
       <UCard class="md:col-span-3">
-        <Chart title="Grafik Total Laporan" :data="data?.graph ?? []" />
+        <Chart title="Grafik Total Masukan & Aspirasi" :data="data?.graph ?? []" />
       </UCard>
     </div>
   </main>

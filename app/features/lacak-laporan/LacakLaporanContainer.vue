@@ -10,7 +10,7 @@ const tiketData = ref<ITiketData>();
 
 async function onSubmit() {
   if (!noTiket.value.trim()) {
-    useToastError("Validasi", "Nomor tiket harus diisi");
+    useToastError("Submit Gagal", "Nomor tiket harus diisi");
     return;
   }
 
@@ -28,12 +28,12 @@ async function onSubmit() {
   catch (error) {
     if (error instanceof FetchError) {
       useToastError(
-        "Submit Failed",
+        "Submit Gagal",
         error.data?.message || "Terjadi kesalahan",
       );
     }
     else {
-      useToastError("Submit Failed", "Internal Server Error");
+      useToastError("Submit Gagal", "Internal Server Error");
     }
   }
   finally {
@@ -49,11 +49,11 @@ async function onSubmit() {
         class="bg-white py-8 md:py-10 px-4 sm:px-6 md:px-8 flex flex-col items-center justify-center gap-6 md:gap-8 rounded-xl shadow-sm border border-gray-100"
       >
         <p class="text-2xl sm:text-3xl md:text-4xl font-semibold md:font-bold text-primary text-center leading-tight">
-          Pantau Status Laporan Anda
+          Pantau Status Masukan & Aspirasi Anda
         </p>
 
         <p class="max-w-xl text-center text-sm md:text-base text-gray-600">
-          Masukkan Nomor Tiket / Tracking ID laporan yang telah Anda kirimkan
+          Masukkan Nomor Tiket / Tracking ID yang telah Anda terima
           untuk melihat perkembangan penanganan secara real-time.
         </p>
 
