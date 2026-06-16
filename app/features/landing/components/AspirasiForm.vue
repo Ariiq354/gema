@@ -79,10 +79,10 @@ async function onSubmit(event: FormSubmitEvent<AspirasiFormSchema>) {
         <OptionInstansi v-model="state.idInstansi" />
       </UFormField>
 
-      <UFormField label="Identitas Pelapor" name="identitasPelapor">
+      <UFormField label="Identitas" name="identitasPelapor">
         <UInput
           v-model="state.identitasPelapor"
-          placeholder="Masukkan Identitas Pelapor"
+          placeholder="Masukkan Identitas"
           :disabled="isLoading"
         />
       </UFormField>

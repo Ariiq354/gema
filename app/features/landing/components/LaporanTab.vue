@@ -17,7 +17,7 @@ function setTab(tab: string) {
 <template>
   <div class="mb-6 md:mb-10">
     <label class="block font-semibold mb-3 text-gray-900 dark:text-gray-100 text-center md:text-left">
-      Pilih Klasifikasi Laporan
+      Pilih Klasifikasi
     </label>
 
     <div
