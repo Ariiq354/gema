@@ -79,7 +79,7 @@ async function onSubmit(event: FormSubmitEvent<MasukanFormSchema>) {
         <OptionInstansi v-model="state.idInstansi" />
       </UFormField>
 
-      <UFormField label="Identitas" name="identitasPelapor">
+      <UFormField label="Identitas Aspirator" name="identitasPelapor">
         <UInput
           v-model="state.identitasPelapor"
           placeholder="Masukkan Identitas"
