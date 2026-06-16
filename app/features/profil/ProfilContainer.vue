@@ -15,7 +15,7 @@ const philosophies = [
     title: "Tulisan GEMA yang Besar dan Tegas",
     points: [
       "Suara masyarakat memiliki posisi penting.",
-      "Setiap pengaduan mendapatkan ruang untuk didengar.",
+      "Setiap masukan mendapatkan ruang untuk didengar.",
       "Transparansi dan keberanian dalam menyampaikan aspirasi.",
     ],
   },
@@ -44,8 +44,8 @@ const philosophies = [
     title: "Bentuk Buku Terbuka di Sisi Kanan",
     points: [
       "Keterbukaan informasi.",
-      "Dokumentasi dan akuntabilitas setiap laporan.",
-      "Komitmen terhadap transparansi proses penanganan pengaduan.",
+      "Dokumentasi dan akuntabilitas setiap masukan dan aspirasi.",
+      "Komitmen terhadap transparansi setiap masukan dan aspirasi.",
     ],
   },
 ];
