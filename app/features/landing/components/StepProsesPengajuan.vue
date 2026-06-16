@@ -6,8 +6,8 @@ const activeStep = ref(1);
 
 const items = ref<StepperItem[]>([
   {
-    title: "Tulis Laporan",
-    description: "Laporkan keluhan atau aspirasi anda dengan jelas dan lengkap",
+    title: "Tulis Masukan & Aspirasi",
+    description: "Laporkan masukan atau aspirasi anda dengan jelas dan lengkap",
     icon: "i-lucide-square-pen",
     disabled: activeStep.value !== 0,
   },
