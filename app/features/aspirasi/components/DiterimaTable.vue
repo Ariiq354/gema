@@ -46,24 +46,6 @@ const columns: TableColumn<any>[] = [
           variant: "outline",
           class: "cursor-pointer",
           disabled: lampiran.length === 0,
-          onClick: () => openModal(ModalListLampiran, { lampiran }),
-        },
-        () => lampiran.length > 0 ? `${lampiran.length} File` : "Tidak ada",
-      );
-    },
-  },
-  {
-    accessorKey: "lampiran",
-    header: "Lampiran",
-    cell: ({ row }) => {
-      const lampiran = row.original.lampiran ?? [];
-      return h(
-        UButton,
-        {
-          size: "sm",
-          variant: "outline",
-          class: "cursor-pointer",
-          disabled: lampiran.length === 0,
           onClick: () => handleDetailLampiran(lampiran),
         },
         () => lampiran.length > 0 ? `${lampiran.length} File` : "Tidak ada",
